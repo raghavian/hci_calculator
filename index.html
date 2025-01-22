@@ -115,9 +115,11 @@
         <div id="dynamic-parameters"></div>
 
         <button id="add-job">Add Use Case</button>
+        <div> Carbon footprint per use case (kgCO2e): </div>
         <div id="jobs-list"></div>
 
         <button id="calculate">Calculate Total Carbon Footprint</button>
+        <div> Your carbon footprint is approximately </div>
         <div id="result"></div>
     </div>
     
@@ -274,8 +276,8 @@
 	    const jobItem = document.createElement('div');
 	    jobItem.classList.add('job-item');
     	jobItem.innerHTML = `
-	${useCaseCounter}. Carbon Footprint for ${useCase.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}; ${job.specificTask.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}; ${job.specificM.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}:
-${carbonFootprint.toFixed(5)} kgCO2e`;
+	${useCaseCounter}. ${useCase.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}; ${job.specificTask.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}; ${job.specificModel.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}:
+${carbonFootprint.toFixed(5)} `;
 	    jobsList.appendChild(jobItem);
 
 	    // Increment the counter
@@ -293,7 +295,7 @@ ${carbonFootprint.toFixed(5)} kgCO2e`;
             });
 
             const resultDiv = document.getElementById('result');
-            resultDiv.textContent = `Total Carbon Footprint: ${totalFootprint.toFixed(5)} kgCO2e`;
+            resultDiv.textContent = `${totalFootprint.toFixed(5)} kgCO2e`;
         });
     </script>
 </body>
