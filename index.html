@@ -149,11 +149,11 @@
 // Define specific models for each task
 const taskModels = {
     "literature-review-or-search": {
-    	"Text-to-Text": 0.004//68515625
+    	"Text-to-Text": 0.00468515625
     },
     "generation-of-materials-for-user-study": {
-    	"Text-to-Text": 0.004,//68515625,
-    	"Text-to-Image": 0.0013//009765625
+    	"Text-to-Text": 0.00468515625,
+    	"Text-to-Image": 0.0013009765625
     },
     "language-model-fine-tuning": {
         "GPT-3": 2,  // Assign numerical value 2 to GPT-3
@@ -273,7 +273,7 @@ function populateSpecificModels(task) {
 	    let tasks = [];
 	    switch (useCase) {
 		case "research-planning":
-		    tasks = ["literature-review", "generation-of-materials-for-user-study"];
+		    tasks = ["literature-review-or-search", "generation-of-materials-for-user-study"];
 		    break;
 		case "training-fine-tuning":
 		    tasks = ["language-model-fine-tuning", "custom-dataset-training"];
@@ -347,7 +347,7 @@ function populateSpecificModels(task) {
 	    jobItem.classList.add('job-item');
     	jobItem.innerHTML = `
 	Use Case: ${useCaseCounter}, Phase: ${useCase.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}, Task: ${job.specificTask.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())},
-	Carbon Footprint: ${carbonFootprint.toFixed(2)} kgCO2e    `;
+	Carbon Footprint: ${carbonFootprint.toFixed(5)} kgCO2e    `;
 	    jobsList.appendChild(jobItem);
 
 	    // Increment the counter
