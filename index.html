@@ -51,11 +51,15 @@
         button:hover {
             background: #0056b3;
         }
-        .result {
+        .result, .jobs {
             margin-top: 20px;
             padding: 10px;
             background: #f8f9fa;
             border-left: 4px solid #007BFF;
+        }
+        .job-item {
+            padding: 5px 0;
+            border-bottom: 1px solid #ccc;
         }
     </style>
 </head>
@@ -97,11 +101,16 @@
                 <input type="number" id="carbon-intensity" value="400" required>
             </div>
 
-            <button type="submit">Calculate</button>
+            <button type="button" id="add-job">Add Job</button>
         </form>
 
+        <div class="jobs" id="jobs-list" style="display:none;">
+            <h2>Jobs</h2>
+            <div id="job-items"></div>
+        </div>
+
         <div id="result" class="result" style="display:none;">
-            <h2>Result</h2>
+            <h2>Total Carbon Footprint</h2>
             <p id="output"></p>
         </div>
     </div>
@@ -113,9 +122,9 @@
             t4: 70   // Watts
         };
 
-        document.getElementById('calculator').addEventListener('submit', function(e) {
-            e.preventDefault();
+        const jobs = [];
 
+        document.getElementById('add-job').addEventListener('click', function() {
             const model = document.getElementById('model').value;
             const trainingTime = parseFloat(document.getElementById('training-time').value);
             const numGpus = parseInt(document.getElementById('num-gpus').value, 10);
@@ -129,12 +138,29 @@
             // Calculate carbon footprint
             const carbonFootprint = totalPower * carbonIntensity; // gCO2
 
-            // Display result
+            // Add job to the list
+            jobs.push({ model, trainingTime, numGpus, gpuType, carbonFootprint });
+
+            // Update job list display
+            const jobItems = document.getElementById('job-items');
+            const jobDiv = document.createElement('div');
+            jobDiv.classList.add('job-item');
+            jobDiv.textContent = `${model.toUpperCase()} - ${carbonFootprint.toFixed(2)} gCO2`;
+            jobItems.appendChild(jobDiv);
+
+            document.getElementById('jobs-list').style.display = 'block';
+
+            // Update total footprint
+            updateTotalFootprint();
+        });
+
+        function updateTotalFootprint() {
+            const totalFootprint = jobs.reduce((sum, job) => sum + job.carbonFootprint, 0);
             const resultDiv = document.getElementById('result');
             const output = document.getElementById('output');
-            output.textContent = `The estimated carbon footprint for training the ${model} model is ${carbonFootprint.toFixed(2)} grams of CO2.`;
+            output.textContent = `The total estimated carbon footprint is ${totalFootprint.toFixed(2)} grams of CO2.`;
             resultDiv.style.display = 'block';
-        });
+        }
     </script>
 </body>
 </html>
