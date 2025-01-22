@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HCI GenAI CO2ST Calculator</title>
+    <title>Deep Learning Carbon Footprint Calculator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -65,31 +65,25 @@
 </head>
 <body>
     <div class="container">
-        <h1>HCI GenAI CO2ST Calculator</h1>
+        <h1>Carbon Footprint Calculator</h1>
         <form id="calculator">
             <div class="form-group">
-                <label for="job-type">Select Job Type:</label>
-                <select id="job-type" required>
-                    <option value="training">Training</option>
-                    <option value="fine-tuning">Fine-tuning</option>
+                <label for="use-case">Select High-Level Use Case:</label>
+                <select id="use-case" required>
+                    <option value="research-planning">Research & Planning</option>
+                    <option value="prototyping-building">Prototyping & Building</option>
+                    <option value="evaluation-user-studies">Evaluation & User Studies</option>
+                    <option value="data-collection">Data Collection</option>
+                    <option value="analysis-synthesis">Analysis & Synthesis</option>
+                    <option value="dissemination-communication">Dissemination & Communication</option>
+                    <option value="training-fine-tuning">Training & Fine-tuning</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="model">Select Model:</label>
-                <select id="model" required>
-                    <option value="gpt">GPT</option>
-                    <option value="bert">BERT</option>
-                    <option value="resnet">ResNet</option>
-                    <option value="custom">Custom</option>
-                </select>
-            </div>
-
-
-            <div class="form-group">
-                <label for="task-type">Select Task Type:</label>
-                <select id="task-type" required>
-                    <!-- Task options will be populated dynamically -->
+                <label for="specific-task">Select Specific Task:</label>
+                <select id="specific-task" required>
+                    <!-- Task options will be dynamically populated -->
                 </select>
             </div>
 
@@ -138,45 +132,62 @@
             t4: 70   // Watts
         };
 
-        const taskOptions = {
-            training: [
-                { value: "language-modeling", label: "Language Modeling" },
-                { value: "image-classification", label: "Image Classification" },
-                { value: "speech-recognition", label: "Speech Recognition" }
+        const useCaseOptions = {
+            "research-planning": [
+                { value: "literature-review", label: "Literature Review" },
+                { value: "goal-definition", label: "Goal Definition" }
             ],
-            fineTuning: [
-                { value: "sentiment-analysis", label: "Sentiment Analysis" },
-                { value: "object-detection", label: "Object Detection" },
-                { value: "custom", label: "Custom Task" }
+            "prototyping-building": [
+                { value: "ui-prototyping", label: "UI Prototyping" },
+                { value: "backend-architecture", label: "Backend Architecture" }
+            ],
+            "evaluation-user-studies": [
+                { value: "usability-testing", label: "Usability Testing" },
+                { value: "focus-groups", label: "Focus Groups" }
+            ],
+            "data-collection": [
+                { value: "survey-design", label: "Survey Design" },
+                { value: "field-observation", label: "Field Observation" }
+            ],
+            "analysis-synthesis": [
+                { value: "qualitative-analysis", label: "Qualitative Analysis" },
+                { value: "statistical-analysis", label: "Statistical Analysis" }
+            ],
+            "dissemination-communication": [
+                { value: "report-writing", label: "Report Writing" },
+                { value: "presentation-preparation", label: "Presentation Preparation" }
+            ],
+            "training-fine-tuning": [
+                { value: "language-model-fine-tuning", label: "Language Model Fine-tuning" },
+                { value: "custom-dataset-training", label: "Custom Dataset Training" }
             ]
         };
 
         const jobs = [];
 
-        document.getElementById('job-type').addEventListener('change', function () {
-            const jobType = this.value;
-            const taskTypeSelect = document.getElementById('task-type');
+        document.getElementById('use-case').addEventListener('change', function () {
+            const useCase = this.value;
+            const specificTaskSelect = document.getElementById('specific-task');
 
             // Clear existing options
-            taskTypeSelect.innerHTML = '';
+            specificTaskSelect.innerHTML = '';
 
-            // Populate task options based on job type
-            const options = taskOptions[jobType === "training" ? "training" : "fineTuning"];
+            // Populate specific task options based on use case
+            const options = useCaseOptions[useCase] || [];
             options.forEach(option => {
                 const opt = document.createElement('option');
                 opt.value = option.value;
                 opt.textContent = option.label;
-                taskTypeSelect.appendChild(opt);
+                specificTaskSelect.appendChild(opt);
             });
         });
 
-        // Trigger the change event on page load to populate initial task options
-        document.getElementById('job-type').dispatchEvent(new Event('change'));
+        // Trigger the change event on page load to populate initial specific task options
+        document.getElementById('use-case').dispatchEvent(new Event('change'));
 
         document.getElementById('add-job').addEventListener('click', function() {
-            const model = document.getElementById('model').value;
-            const jobType = document.getElementById('job-type').value;
-            const taskType = document.getElementById('task-type').value;
+            const useCase = document.getElementById('use-case').value;
+            const specificTask = document.getElementById('specific-task').value;
             const trainingTime = parseFloat(document.getElementById('training-time').value);
             const numGpus = parseInt(document.getElementById('num-gpus').value, 10);
             const gpuType = document.getElementById('gpu-type').value;
@@ -190,13 +201,13 @@
             const carbonFootprint = totalPower * carbonIntensity; // gCO2
 
             // Add job to the list
-            jobs.push({ model, jobType, taskType, trainingTime, numGpus, gpuType, carbonFootprint });
+            jobs.push({ useCase, specificTask, trainingTime, numGpus, gpuType, carbonFootprint });
 
             // Update job list display
             const jobItems = document.getElementById('job-items');
             const jobDiv = document.createElement('div');
             jobDiv.classList.add('job-item');
-            jobDiv.textContent = `${model.toUpperCase()} (${jobType}, ${taskType}) - ${carbonFootprint.toFixed(2)} gCO2`;
+            jobDiv.textContent = `${useCase.toUpperCase()} (${specificTask}) - ${carbonFootprint.toFixed(2)} gCO2`;
             jobItems.appendChild(jobDiv);
 
             document.getElementById('jobs-list').style.display = 'block';
