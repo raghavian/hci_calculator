@@ -131,9 +131,9 @@
         </div>
 
         <button id="add-job">Add Job</button>
-        <button id="calculate">Calculate Total Carbon Footprint</button>
-
         <div id="jobs-list"></div>
+
+        <button id="calculate">Calculate Total Carbon Footprint</button>
         <div id="result"></div>
     </div>
     <script>
@@ -141,7 +141,7 @@
 
         const taskParameters = {
             "literature-review": [
-                { id: "num-papers", label: "Number of Papers Reviewed", type: "number", min: 1 },
+                { id: "num-papers", label: "Number of Papers Reviewed", type: "range", min: 1, max: 100, step: 1, default:1 },
                 { id: "search-databases", label: "Number of Databases Used", type: "number", min: 1 }
             ],
             "goal-definition": [
@@ -158,30 +158,67 @@
             ]
         };
 
-        function populateDynamicParameters(task) {
-            const dynamicParamsDiv = document.getElementById('dynamic-parameters');
-            dynamicParamsDiv.innerHTML = ''; // Clear previous parameters
+function populateDynamicParameters(task) {
+    const dynamicParamsDiv = document.getElementById('dynamic-parameters');
+    dynamicParamsDiv.innerHTML = ''; // Clear previous parameters
 
-            const parameters = taskParameters[task] || [];
-            parameters.forEach(param => {
-                const paramDiv = document.createElement('div');
-                paramDiv.classList.add('form-group');
+    const parameters = taskParameters[task] || [];
+    parameters.forEach(param => {
+        const paramDiv = document.createElement('div');
+        paramDiv.classList.add('form-group');
 
-                const label = document.createElement('label');
-                label.htmlFor = param.id;
-                label.textContent = param.label;
+        const label = document.createElement('label');
+        label.htmlFor = param.id;
+        label.textContent = param.label;
 
-                const input = document.createElement('input');
-                input.id = param.id;
-                input.type = param.type;
-                input.min = param.min;
-                if (param.step) input.step = param.step;
+        if (param.type === 'range') {
+            // Create a slider
+            const sliderContainer = document.createElement('div');
+            sliderContainer.style.display = 'flex';
+            sliderContainer.style.alignItems = 'center';
+            sliderContainer.style.gap = '10px';
 
-                paramDiv.appendChild(label);
-                paramDiv.appendChild(input);
-                dynamicParamsDiv.appendChild(paramDiv);
+            const minLabel = document.createElement('span');
+            minLabel.textContent = param.min;
+
+            const slider = document.createElement('input');
+            slider.id = param.id;
+            slider.type = 'range';
+            slider.min = param.min;
+            slider.max = param.max;
+            slider.step = param.step;
+            slider.value = param.default || param.min;
+
+            const valueDisplay = document.createElement('span');
+            valueDisplay.id = `${param.id}-display`;
+            valueDisplay.textContent = slider.value;
+
+            slider.addEventListener('input', () => {
+                valueDisplay.textContent = slider.value;
             });
+
+            sliderContainer.appendChild(minLabel);
+            sliderContainer.appendChild(slider);
+            sliderContainer.appendChild(valueDisplay);
+
+            paramDiv.appendChild(label);
+            paramDiv.appendChild(sliderContainer);
+        } else {
+            // Default input field for non-slider parameters
+            const input = document.createElement('input');
+            input.id = param.id;
+            input.type = param.type;
+            input.min = param.min;
+            if (param.step) input.step = param.step;
+
+            paramDiv.appendChild(label);
+            paramDiv.appendChild(input);
         }
+
+        dynamicParamsDiv.appendChild(paramDiv);
+    });
+}
+
 
         document.getElementById('training-time').addEventListener('input', function () {
             document.getElementById('training-time-display').textContent = this.value;
