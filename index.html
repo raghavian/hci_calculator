@@ -363,7 +363,7 @@ function populateSpecificModels(task) {
 	    const jobItem = document.createElement('div');
 	    jobItem.classList.add('job-item');
     	jobItem.innerHTML = `
-	Use Case: ${useCaseCounter}, Phase: ${useCase}.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()), Task: ${job.specificTask},
+	Use Case: ${useCaseCounter}, Phase: ${useCase.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}, Task: ${job.specificTask},
 	Carbon Footprint: ${carbonFootprint.toFixed(2)} kgCO2e    `;
 	    jobsList.appendChild(jobItem);
 
