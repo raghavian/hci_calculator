@@ -295,7 +295,16 @@ ${carbonFootprint.toFixed(5)} kgCO2e`;
             });
 
             const resultDiv = document.getElementById('result');
-            resultDiv.textContent = `Your carbon footprint is approximately\n${totalFootprint.toFixed(5)} kgCO2e`;
+            resultDiv.textContent = `Your carbon footprint is approximately `;
+            
+            // Create a <br> element for a new line
+	const br = document.createElement('br');
+	resultDiv.appendChild(br);
+
+	// Add the footprint value after the line break
+	resultDiv.appendChild(document.createTextNode(`${totalFootprint.toFixed(5)} kgCO2e`));
+
+//            \n${totalFootprint.toFixed(5)} kgCO2e`;
         });
     </script>
 </body>
