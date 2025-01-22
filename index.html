@@ -71,6 +71,7 @@
             padding: 10px;
             background-color: #e9ecef;
             border-radius: 4px;
+            font-size: 0.6em;
         }
 
         #result {
@@ -363,7 +364,7 @@ function populateSpecificModels(task) {
 	    const jobItem = document.createElement('div');
 	    jobItem.classList.add('job-item');
     	jobItem.innerHTML = `
-	Use Case: ${useCaseCounter}, Phase: ${useCase.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}, Task: ${job.specificTask},
+	Use Case: ${useCaseCounter}, Phase: ${useCase.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}, Task: ${job.specificTask.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())},
 	Carbon Footprint: ${carbonFootprint.toFixed(2)} kgCO2e    `;
 	    jobsList.appendChild(jobItem);
 
