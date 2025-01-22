@@ -1,13 +1,3 @@
-Yes, you can have a double conditional setup, where the available model-specific parameters depend on both the selected **use case** and the selected **model**. This allows you to display a different set of parameters for a model based on the use case.
-
-Here’s how we can modify the existing code to achieve this:
-
-### Approach:
-1. **Use Case-Model Conditional Parameters**: We define model parameters that are specific to both the use case and the model. 
-2. **Dynamic Parameter Population**: Based on both the selected use case and model, the form will display the correct parameters for that model in the context of the use case.
-
-### Updated Code Example:
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -347,12 +337,3 @@ Here’s how we can modify the existing code to achieve this:
     </script>
 </body>
 </html>
-```
-
-### Key Updates:
-1. **Model-Specific Parameters for Different Use Cases**: Now, the parameters are conditional based on **both** the use case and the selected model. For example:
-   - For **ResNet** in the `research-planning` use case, you'll see parameters like `learning-rate` and `batch-size`.
-   - For **ResNet** in the `training-fine-tuning` use case, you'll see a different parameter like `dropout-rate`.
-2. **Dynamic Parameter Population**: The parameters for the selected model change based on the selected use case and model.
-
-This setup allows you to define specific parameters for each model based on the context of the selected use case, providing a flexible double conditional logic for parameter rendering.
