@@ -87,10 +87,10 @@
 </head>
 <body>
     <div class="calculator-container">
-        <h1>Carbon Footprint Calculator</h1>
+        <h1>HCI GenAI CO2st Calculator</h1>
 
         <div class="form-group">
-            <label for="use-case">Select Use Case:</label>
+            <label for="use-case">Select Research Phase:</label>
             <select id="use-case" required>
                 <option value="research-planning">Research & Planning</option>
                 <option value="prototyping-building">Prototyping & Building</option>
@@ -103,16 +103,15 @@
         </div>
 
         <div class="form-group">
-            <label for="specific-task">Select Specific Task:</label>
+            <label for="specific-task">Select Type of Use:</label>
             <select id="specific-task" required>
                 <!-- Task options will be dynamically populated -->
             </select>
         </div>
 
 
-
 	<div class="form-group">
-	    <label for="specific-model">Select Specific Model:</label>
+	    <label for="specific-model">Select Type of Model:</label>
 	    <select id="specific-model" required>
 		<!-- Model options will be dynamically populated -->
 	    </select>
@@ -120,30 +119,7 @@
 	
 	<div id="dynamic-parameters"></div>
 
-<!--
-        <div class="form-group">
-            <label for="training-time">Training Time (in hours):</label>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <span id="min-training-time">1</span>
-                <input type="range" id="training-time" min="1" max="100" value="1" step="1" required style="flex-grow: 1;">
-                <span id="training-time-display">1</span> hours
-                <span id="max-training-time">100</span>
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <label for="carbon-intensity">Carbon Intensity (kgCO2e/kWh):</label>
-            <input type="number" id="carbon-intensity" min="0" step="0.01" value="0.45" required>
-        </div>
-
-
-        <div class="form-group">
-            <label for="power-usage">Power Usage Effectiveness (PUE):</label>
-            <input type="number" id="power-usage" min="1" step="0.01" value="1.58" required>
-        </div>
--->
-        <button id="add-job">Add Job</button>
+        <button id="add-job">Add Use Case</button>
         <div id="jobs-list"></div>
 
         <button id="calculate">Calculate Total Carbon Footprint</button>
@@ -154,13 +130,12 @@
 
 
         const taskParameters = {
-            "literature-review": [
-                { id: "num-papers", label: "Number of Papers Reviewed", type: "range", min: 1, max: 100, step: 1, default:1 },
-                { id: "search-databases", label: "Number of Databases Used", type: "number", min: 1 }
+            "literature-review-or-search": [
+                { id: "num-papers", label: "Number of Papers Reviewed", type: "number", min: 0, default:1 }
             ],
-            "goal-definition": [
-                { id: "num-meetings", label: "Number of Team Meetings", type: "number", min: 1 },
-                { id: "duration-per-meeting", label: "Average Meeting Duration (hours)", type: "number", min: 0.5, step: 0.1 }
+            "generation-of-materials-for-user-study": [
+            	{ id: "avg-len", label: "Average length of prompts (in words)", type: "number", min: 0, default: 100},
+        	{ id: "num-prompt", label: "Number of prompts", type: "number", min: 0, default: 1},
             ],
             "language-model-fine-tuning": [
                 { id: "num-epochs", label: "Number of Epochs", type: "number", min: 1 },
@@ -173,6 +148,13 @@
         };
 // Define specific models for each task
 const taskModels = {
+    "literature-review-or-search": {
+    	"Text-to-Text": 0.00468515625
+    },
+    "generation-of-materials-for-user-study": {
+    	"Text-to-Text": 0.00468515625,
+    	"Text-to-Image": 0.0013009765625
+    }
     "language-model-fine-tuning": {
         "GPT-3": 2,  // Assign numerical value 2 to GPT-3
         "BERT": 0.2,  // Assign numerical value 0.2 to BERT
@@ -291,7 +273,7 @@ function populateSpecificModels(task) {
 	    let tasks = [];
 	    switch (useCase) {
 		case "research-planning":
-		    tasks = ["literature-review", "goal-definition"];
+		    tasks = ["literature-review", "generation-of-materials-for-user-study"];
 		    break;
 		case "training-fine-tuning":
 		    tasks = ["language-model-fine-tuning", "custom-dataset-training"];
@@ -365,7 +347,7 @@ function populateSpecificModels(task) {
 	    jobItem.classList.add('job-item');
     	jobItem.innerHTML = `
 	Use Case: ${useCaseCounter}, Phase: ${useCase.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}, Task: ${job.specificTask.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())},
-	Carbon Footprint: ${carbonFootprint.toFixed(2)} kgCO2e    `;
+	Carbon Footprint: ${carbonFootprint.toFixed(5)} kgCO2e    `;
 	    jobsList.appendChild(jobItem);
 
 	    // Increment the counter
