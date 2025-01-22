@@ -267,11 +267,11 @@ function populateSpecificModels(task) {
 }
 
 
-
+<!--
         document.getElementById('training-time').addEventListener('input', function () {
             document.getElementById('training-time-display').textContent = this.value;
         });
-
+-->
 	
 
 	document.getElementById('use-case').addEventListener('change', function () {
@@ -324,7 +324,7 @@ function populateSpecificModels(task) {
             const specificModel = document.getElementById('specific-model').value; // Get 	selected model
             const modelValue = taskModels[specificTask] ? taskModels[specificTask][specificModel] : 1;
 
-	    const trainingTime = parseFloat(document.getElementById('training-time').value);
+
 	    const carbonIntensity = 0.481 
 	    // parseFloat(document.getElementById('carbon-intensity').value);
 	    const powerUsage = 1.58
@@ -346,13 +346,12 @@ function populateSpecificModels(task) {
 	    });
 
 	    // Calculate carbon footprint with additional parameters
-	    const carbonFootprint = trainingTime * carbonIntensity * powerUsage * additionalFactor*modelValue;
+	    const carbonFootprint = carbonIntensity * powerUsage * additionalFactor*modelValue;
 
 	    const job = {
 		useCase: `${useCase} #${useCaseCounter}`, // Append the counter to the use case
 		specificTask,
 		specificModel,
-		trainingTime,
 		carbonIntensity,
 		powerUsage,
 		carbonFootprint
@@ -378,8 +377,6 @@ function populateSpecificModels(task) {
             let totalFootprint = 0;
 
             jobs.forEach(job => {
-                const energyUsage = job.trainingTime * job.powerUsage;
-//                const carbonFootprint = energyUsage * job.carbonIntensity;
                 totalFootprint += job.carbonFootprint;
             });
 
