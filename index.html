@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deep Learning Carbon Footprint Calculator</title>
+    <title>HCI GenAI CO2ST Calculator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -65,8 +65,16 @@
 </head>
 <body>
     <div class="container">
-        <h1>Carbon Footprint Calculator</h1>
+        <h1>HCI GenAI CO2ST Calculator</h1>
         <form id="calculator">
+            <div class="form-group">
+                <label for="job-type">Select Job Type:</label>
+                <select id="job-type" required>
+                    <option value="training">Training</option>
+                    <option value="fine-tuning">Fine-tuning</option>
+                </select>
+            </div>
+
             <div class="form-group">
                 <label for="model">Select Model:</label>
                 <select id="model" required>
@@ -74,6 +82,14 @@
                     <option value="bert">BERT</option>
                     <option value="resnet">ResNet</option>
                     <option value="custom">Custom</option>
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="task-type">Select Task Type:</label>
+                <select id="task-type" required>
+                    <!-- Task options will be populated dynamically -->
                 </select>
             </div>
 
@@ -122,10 +138,45 @@
             t4: 70   // Watts
         };
 
+        const taskOptions = {
+            training: [
+                { value: "language-modeling", label: "Language Modeling" },
+                { value: "image-classification", label: "Image Classification" },
+                { value: "speech-recognition", label: "Speech Recognition" }
+            ],
+            fineTuning: [
+                { value: "sentiment-analysis", label: "Sentiment Analysis" },
+                { value: "object-detection", label: "Object Detection" },
+                { value: "custom", label: "Custom Task" }
+            ]
+        };
+
         const jobs = [];
+
+        document.getElementById('job-type').addEventListener('change', function () {
+            const jobType = this.value;
+            const taskTypeSelect = document.getElementById('task-type');
+
+            // Clear existing options
+            taskTypeSelect.innerHTML = '';
+
+            // Populate task options based on job type
+            const options = taskOptions[jobType === "training" ? "training" : "fineTuning"];
+            options.forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option.value;
+                opt.textContent = option.label;
+                taskTypeSelect.appendChild(opt);
+            });
+        });
+
+        // Trigger the change event on page load to populate initial task options
+        document.getElementById('job-type').dispatchEvent(new Event('change'));
 
         document.getElementById('add-job').addEventListener('click', function() {
             const model = document.getElementById('model').value;
+            const jobType = document.getElementById('job-type').value;
+            const taskType = document.getElementById('task-type').value;
             const trainingTime = parseFloat(document.getElementById('training-time').value);
             const numGpus = parseInt(document.getElementById('num-gpus').value, 10);
             const gpuType = document.getElementById('gpu-type').value;
@@ -139,13 +190,13 @@
             const carbonFootprint = totalPower * carbonIntensity; // gCO2
 
             // Add job to the list
-            jobs.push({ model, trainingTime, numGpus, gpuType, carbonFootprint });
+            jobs.push({ model, jobType, taskType, trainingTime, numGpus, gpuType, carbonFootprint });
 
             // Update job list display
             const jobItems = document.getElementById('job-items');
             const jobDiv = document.createElement('div');
             jobDiv.classList.add('job-item');
-            jobDiv.textContent = `${model.toUpperCase()} - ${carbonFootprint.toFixed(2)} gCO2`;
+            jobDiv.textContent = `${model.toUpperCase()} (${jobType}, ${taskType}) - ${carbonFootprint.toFixed(2)} gCO2`;
             jobItems.appendChild(jobDiv);
 
             document.getElementById('jobs-list').style.display = 'block';
