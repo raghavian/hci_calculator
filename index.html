@@ -82,6 +82,7 @@
             background-color: #d4edda;
             color: #155724;
             font-weight: bold;
+            font-size: 1.5em;
         }
     </style>
 </head>
@@ -241,7 +242,7 @@ const taskModels = {
 	    const useCase = document.getElementById('use-case').value;
 	    const specificTask = document.getElementById('specific-task').value;
             const specificModel = document.getElementById('specific-model').value; // Get 	selected model
-            const modelValue = taskModels[specificModel] ? taskModels[specificTask][specificModel] : 1;
+            const modelValue = taskModels[specificModel] : 0.004;
 	    const carbonIntensity = 0.481;
 
 
