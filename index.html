@@ -128,146 +128,151 @@
     <script>
         const jobs = [];
 
-const taskParameters = {
-    "literature-review-or-search": [
-        { id: "num-papers", label: "Number of Papers Reviewed", type: "number", min: 0, default: 1 }
-    ],
-    "generation-of-materials-for-user-study": [
-        { id: "avg-len", label: "Average length of prompts (in words)", type: "number", min: 0, default: 100 },
-        { id: "num-prompt", label: "Number of prompts", type: "number", min: 0, default: 1 }
-    ],
-    "language-model-fine-tuning": [
-        { id: "num-epochs", label: "Number of Epochs", type: "number", min: 1 },
-        { id: "dataset-size", label: "Dataset Size (GB)", type: "number", min: 0.1, step: 0.1 }
-    ]
-};
+        const taskParameters = {
+            "literature-review-or-search": [
+                { id: "num-papers", label: "Number of Papers Reviewed", type: "number", min: 0, default: 1 }
+            ],
+            "generation-of-materials-for-user-study": [
+                { id: "avg-len", label: "Average length of prompts (in words)", type: "number", min: 0, default: 100},
+                { id: "num-prompt", label: "Number of prompts", type: "number", min: 0, default: 1},
+            ],
+            "language-model-fine-tuning": [
+                { id: "num-epochs", label: "Number of Epochs", type: "number", min: 1 },
+                { id: "dataset-size", label: "Dataset Size (GB)", type: "number", min: 0.1, step: 0.1 }
+            ],
+            "custom-dataset-training": [
+                { id: "num-layers", label: "Number of Layers in the Model", type: "number", min: 1 },
+                { id: "training-batch-size", label: "Training Batch Size", type: "number", min: 1 }
+            ]
+        };
 
-const taskModels = {
-    "literature-review-or-search": {
-        "Text-to-Text": 0.00468515625
-    },
-    "generation-of-materials-for-user-study": {
-        "Text-to-Text": 0.00468515625,
-        "Text-to-Image": 0.0013009765625
-    },
-    "language-model-fine-tuning": {
-        "GPT-3": 2,  // Assign numerical value 2 to GPT-3
-        "BERT": 0.2,  // Assign numerical value 0.2 to BERT
-        "T5": 1       // Assign numerical value 1 to T5
-    }
-};
+        const taskModels = {
+            "literature-review-or-search": {
+                "Text-to-Text": 0.00468515625
+            },
+            "generation-of-materials-for-user-study": {
+                "Text-to-Text": 0.00468515625,
+                "Text-to-Image": 0.0013009765625
+            },
+            "language-model-fine-tuning": {
+                "GPT-3": 2,  
+                "BERT": 0.2,  
+                "T5": 1       
+            },
+            "custom-dataset-training": {
+                "ResNet": 1.5,
+                "VGG": 1,
+                "Inception": 0.8
+            }
+        };
 
-// Define model-specific parameters
-const modelSpecificParameters = {
-    "GPT-3": {
-        "num-parameters": [
-            { id: "num-epochs", label: "Number of Epochs", type: "number", min: 1, default: 5 }
-        ]
-    },
-    "BERT": {
-        "num-parameters": [
-            { id: "batch-size", label: "Batch Size", type: "number", min: 1, default: 32 }
-        ]
-    }
-};
+        const modelSpecificParameters = {
+      
+            "ResNet": {
+                "research-planning": [
+                    { id: "learning-rate", label: "Learning Rate", type: "number", min: 0.0001, max: 0.1, step: 0.0001, default: 0.01 },
+                    { id: "batch-size", label: "Batch Size", type: "number", min: 1, max: 100, step: 1, default: 32 }
+                ],
+                "training-fine-tuning": [
+                    { id: "dropout-rate", label: "Dropout Rate", type: "number", min: 0.0, max: 1.0, step: 0.01, default: 0.5 }
+                ]
+            },
+            "VGG": {
+                "research-planning": [
+                    { id: "learning-rate", label: "Learning Rate", type: "number", min: 0.0001, max: 0.1, step: 0.0001, default: 0.005 }
+                ]
+            }
+        };
 
-// Function to populate tasks based on selected use case
-function populateTasks(useCase) {
-    const taskSelect = document.getElementById('specific-task');
-    taskSelect.innerHTML = '';  // Clear old options
+        function populateSpecificTasks(useCase) {
+            const specificTaskSelect = document.getElementById('specific-task');
+            specificTaskSelect.innerHTML = '';
 
-    let tasks = [];
-    switch (useCase) {
-        case "research-planning":
-            tasks = ["literature-review-or-search", "generation-of-materials-for-user-study"];
-            break;
-        case "training-fine-tuning":
-            tasks = ["language-model-fine-tuning"];
-            break;
-        // Add more use case conditions as needed
-    }
+            let tasks = [];
+            switch (useCase) {
+                case "research-planning":
+                    tasks = ["literature-review-or-search", "generation-of-materials-for-user-study"];
+                    break;
+                case "training-fine-tuning":
+                    tasks = ["language-model-fine-tuning", "custom-dataset-training"];
+                    break;
+            }
 
-    tasks.forEach(task => {
-        const option = document.createElement('option');
-        option.value = task;
-        option.textContent = task.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-        taskSelect.appendChild(option);
-    });
-}
+            tasks.forEach(task => {
+                const option = document.createElement('option');
+                option.value = task;
+                option.textContent = task.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                specificTaskSelect.appendChild(option);
+            });
 
-// Function to populate models based on selected task
-function populateModels(task) {
-    const modelSelect = document.getElementById('specific-model');
-    modelSelect.innerHTML = '';  // Clear old options
+            specificTaskSelect.dispatchEvent(new Event('change'));
+        }
 
-    let models = [];
-    if (taskModels[task]) {
-        models = Object.keys(taskModels[task]);
-    }
+        function populateSpecificModels(task) {
+            const specificModelSelect = document.getElementById('specific-model');
+            specificModelSelect.innerHTML = '';
 
-    models.forEach(model => {
-        const option = document.createElement('option');
-        option.value = model;
-        option.textContent = model;
-        modelSelect.appendChild(option);
-    });
-}
+            let models = [];
+            if (taskModels[task]) {
+                models = Object.keys(taskModels[task]);
+            }
 
-// Function to populate model-specific parameters based on selected model
-function populateModelSpecificParameters(model) {
-    const dynamicParamsDiv = document.getElementById('dynamic-parameters');
-    dynamicParamsDiv.innerHTML = '';  // Clear old parameters
+            models.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                specificModelSelect.appendChild(option);
+            });
 
-    if (modelSpecificParameters[model]) {
-        modelSpecificParameters[model].num-parameters.forEach(param => {
-            const paramDiv = document.createElement('div');
-            paramDiv.classList.add('form-group');
+            specificModelSelect.dispatchEvent(new Event('change'));
+        }
 
-            const label = document.createElement('label');
-            label.htmlFor = param.id;
-            label.textContent = param.label;
+        function populateDynamicParameters(useCase, model) {
+            const dynamicParamsDiv = document.getElementById('dynamic-parameters');
+            dynamicParamsDiv.innerHTML = '';
 
-            const input = document.createElement('input');
-            input.id = param.id;
-            input.type = param.type;
-            input.min = param.min;
-            input.value = param.default;
+            const modelParams = modelSpecificParameters[model] ? modelSpecificParameters[model][useCase] : [];
+            modelParams.forEach(param => {
+                const paramDiv = document.createElement('div');
+                paramDiv.classList.add('form-group');
 
-            paramDiv.appendChild(label);
-            paramDiv.appendChild(input);
-            dynamicParamsDiv.appendChild(paramDiv);
+                const label = document.createElement('label');
+                label.htmlFor = param.id;
+                label.textContent = param.label;
+
+                const input = document.createElement('input');
+                input.id = param.id;
+                input.type = param.type;
+                input.min = param.min;
+                if (param.step) input.step = param.step;
+                input.value = param.default || param.min;
+
+                paramDiv.appendChild(label);
+                paramDiv.appendChild(input);
+
+                dynamicParamsDiv.appendChild(paramDiv);
+            });
+        }
+
+        document.getElementById('use-case').addEventListener('change', function () {
+            const useCase = this.value;
+            populateSpecificTasks(useCase);
         });
-    }
-}
 
-// Event listener for use case change
-document.getElementById('use-case').addEventListener('change', function () {
-    const selectedUseCase = this.value;
-    populateTasks(selectedUseCase);
-    populateModels(document.getElementById('specific-task').value);  // Populate models for the default task
-    populateModelSpecificParameters(document.getElementById('specific-model').value);  // Populate model-specific parameters
-});
+        document.getElementById('specific-task').addEventListener('change', function () {
+            const selectedTask = this.value;
+            const selectedUseCase = document.getElementById('use-case').value;
 
-// Event listener for task change
-document.getElementById('specific-task').addEventListener('change', function () {
-    const selectedTask = this.value;
-    populateModels(selectedTask);
-    populateModelSpecificParameters(document.getElementById('specific-model').value);  // Populate model-specific parameters for selected task
-});
+            populateDynamicParameters(selectedUseCase, selectedTask);
+            populateSpecificModels(selectedTask);
+        });
 
-// Event listener for model change
-document.getElementById('specific-model').addEventListener('change', function () {
-    const selectedModel = this.value;
-    populateModelSpecificParameters(selectedModel);  // Populate model-specific parameters for selected model
-});
-
-// Initialize the dropdowns on page load
-document.addEventListener('DOMContentLoaded', function () {
-    const initialUseCase = document.getElementById('use-case').value;
-    populateTasks(initialUseCase);
-    populateModels(document.getElementById('specific-task').value);  // Populate models for the default task
-    populateModelSpecificParameters(document.getElementById('specific-model').value);  // Populate model-specific parameters
-});
+        document.getElementById('specific-model').addEventListener('change', function () {
+            const selectedModel = this.value;
+            const selectedUseCase = document.getElementById('use-case').value;
+            
+            populateDynamicParameters(selectedUseCase, selectedModel);
+        });
 
         document.getElementById('add-job').addEventListener('click', function () {
             const useCase = document.getElementById('use-case').value;
