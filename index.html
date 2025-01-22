@@ -115,12 +115,12 @@
         <div id="dynamic-parameters"></div>
 
         <button id="add-job">Add Use Case</button>
-        <div> Carbon footprint per use case (kgCO2e): </div>
         <div id="jobs-list"></div>
 
         <button id="calculate">Calculate Total Carbon Footprint</button>
-        <div> Your carbon footprint is approximately </div>
-        <div id="result"></div>
+        <div id="result">
+        <label> Your carbon footprint is approximately </label>
+        </div>
     </div>
     
     <script>
@@ -295,7 +295,7 @@ ${carbonFootprint.toFixed(5)} `;
             });
 
             const resultDiv = document.getElementById('result');
-            resultDiv.textContent = `${totalFootprint.toFixed(5)} kgCO2e`;
+            resultDiv.textContent = `Your carbon footprint is approximately ${totalFootprint.toFixed(5)} kgCO2e`;
         });
     </script>
 </body>
