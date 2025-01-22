@@ -123,16 +123,8 @@
     
     // Define specific models for each task
 const taskModels = {
-    "language-model-fine-tuning": {
-        "GPT-3": 2,  // Assign numerical value 2 to GPT-3
-        "BERT": 0.2,  // Assign numerical value 0.2 to BERT
-        "T5": 1       // Assign numerical value 1 to T5
-    },
-    "custom-dataset-training": {
-        "ResNet": 1.5,
-        "VGG": 1,
-        "Inception": 0.8
-    }
+	"Text-to-Text": 0.00468515625,
+	"Text-to-Image": 0.0013009765625
 };
 
         const jobs = [];
@@ -249,7 +241,7 @@ const taskModels = {
 	    const useCase = document.getElementById('use-case').value;
 	    const specificTask = document.getElementById('specific-task').value;
             const specificModel = document.getElementById('specific-model').value; // Get 	selected model
-            const modelValue = taskModels[specificTask] ? taskModels[specificTask][specificModel] : 1;
+            const modelValue = taskModels[specificModel] ? taskModels[specificTask][specificModel] : 1;
 	    const carbonIntensity = 0.481;
 
 
