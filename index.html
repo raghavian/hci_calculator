@@ -131,6 +131,10 @@
         </div>
     </div>
 
+
+    <!-- Dynamic parameters container -->
+    <div id="dynamic-parameters"></div>
+
     <script>
         const gpuPower = {
             a100: 400, // Watts
@@ -192,6 +196,65 @@
             });
         });
 
+        // Define additional parameter sets for specific tasks
+const taskParameters = {
+    "literature-review": [
+        { id: "num-papers", label: "Number of Papers Reviewed", type: "number", min: 1 },
+        { id: "search-databases", label: "Number of Databases Used", type: "number", min: 1 }
+    ],
+    "goal-definition": [
+        { id: "num-meetings", label: "Number of Team Meetings", type: "number", min: 1 },
+        { id: "duration-per-meeting", label: "Average Meeting Duration (in hours)", type: "number", min: 0.5, step: 0.1 }
+    ],
+    "language-model-fine-tuning": [
+        { id: "num-epochs", label: "Number of Epochs", type: "number", min: 1 },
+        { id: "dataset-size", label: "Dataset Size (in GB)", type: "number", min: 0.1, step: 0.1 }
+    ],
+    "custom-dataset-training": [
+        { id: "num-layers", label: "Number of Layers in the Model", type: "number", min: 1 },
+        { id: "training-batch-size", label: "Training Batch Size", type: "number", min: 1 }
+    ]
+};
+
+// Function to populate dynamic parameters based on task
+function populateDynamicParameters(task) {
+    const dynamicParamsDiv = document.getElementById('dynamic-parameters');
+    dynamicParamsDiv.innerHTML = ''; // Clear previous parameters
+
+    const parameters = taskParameters[task] || [];
+    parameters.forEach(param => {
+        const paramDiv = document.createElement('div');
+        paramDiv.classList.add('form-group');
+        const label = document.createElement('label');
+        label.htmlFor = param.id;
+        label.textContent = param.label;
+
+        const input = document.createElement('input');
+        input.id = param.id;
+        input.type = param.type;
+        input.min = param.min;
+        if (param.step) input.step = param.step;
+
+        paramDiv.appendChild(label);
+        paramDiv.appendChild(input);
+        dynamicParamsDiv.appendChild(paramDiv);
+    });
+}
+
+// Listen for changes in the specific task dropdown
+document.getElementById('specific-task').addEventListener('change', function () {
+    const selectedTask = this.value;
+    populateDynamicParameters(selectedTask);
+});
+
+// Initial population of dynamic parameters
+document.getElementById('use-case').addEventListener('change', function () {
+    const specificTaskSelect = document.getElementById('specific-task');
+    const selectedTask = specificTaskSelect.value;
+    populateDynamicParameters(selectedTask);
+});
+
+
         // Trigger the change event on page load to populate initial specific task options
         document.getElementById('use-case').dispatchEvent(new Event('change'));
 
@@ -203,6 +266,7 @@
             const gpuType = document.getElementById('gpu-type').value;
             const carbonIntensity = parseFloat(document.getElementById('carbon-intensity').value);
 
+            
             // Calculate power consumption in kWh
             const powerPerGpu = gpuPower[gpuType];
             const totalPower = (powerPerGpu * numGpus * trainingTime) / 1000; // kWh
