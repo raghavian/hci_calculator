@@ -89,10 +89,14 @@
 
             
             <div class="form-group">
-                <label for="training-time">Training Time (in hours):</label>
-                <input type="range" id="training-time" min="1" max="100" value="1" step="1" required>
+            <label for="training-time">Training Time (in hours):</label>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span id="min-training-time">1</span>
+                <input type="range" id="training-time" min="1" max="100" value="1" step="1" required style="flex-grow: 1;">
                 <span id="training-time-display">1</span> hours
+                <span id="max-training-time">100</span>
             </div>
+        </div>
 
             <div class="form-group">
                 <label for="num-gpus">Number of GPUs:</label>
