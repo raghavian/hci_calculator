@@ -233,11 +233,11 @@
             specificModelSelect.dispatchEvent(new Event('change'));
         }
 
-        function populateDynamicParameters(useCase, model) {
+        function populateDynamicParameters(useCase, model, task) {
             const dynamicParamsDiv = document.getElementById('dynamic-parameters');
             dynamicParamsDiv.innerHTML = '';
 
-            const modelParams = modelSpecificParameters[model] ? modelSpecificParameters[model][useCase] ? modelSpecificParameters[model][useCase][specificTask] : [];
+            const modelParams = modelSpecificParameters[model] ? modelSpecificParameters[model][useCase] ? modelSpecificParameters[model][useCase][task] : [];
             modelParams.forEach(param => {
                 const paramDiv = document.createElement('div');
                 paramDiv.classList.add('form-group');
