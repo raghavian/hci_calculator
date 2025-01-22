@@ -130,14 +130,11 @@
 
         const taskParameters = {
             "literature-review-or-search": [
-                { id: "num-papers", label: "Number of Papers Reviewed", type: "number", min: 0, default:1 }
+                { id: "num-papers", label: "Number of Papers Reviewed", type: "number", min: 0, default: 1 }
             ],
             "generation-of-materials-for-user-study": [
-            	{ id: "avg-len", label: "Average length of prompts (in words)", type: "number", min: 0, default: 100},
-        	    { id: "num-prompt", label: "Number of prompts", type: "number", min: 0, default: 1},
-            ],
-            "customized-chatbot": [
-                { id: "num-papers", label: "Number of Papers Reviewed", type: "number", min: 0, default:1 }
+                { id: "avg-len", label: "Average length of prompts (in words)", type: "number", min: 0, default: 100},
+                { id: "num-prompt", label: "Number of prompts", type: "number", min: 0, default: 1},
             ],
             "language-model-fine-tuning": [
                 { id: "num-epochs", label: "Number of Epochs", type: "number", min: 1 },
@@ -167,6 +164,20 @@
                 "VGG": 1,
                 "Inception": 0.8
             }
+        };
+
+        const modelSpecificParameters = {
+            "GPT-3": [
+                { id: "learning-rate", label: "Learning Rate", type: "number", min: 0.0001, max: 0.1, step: 0.0001, default: 0.01 },
+                { id: "batch-size", label: "Batch Size", type: "number", min: 1, max: 100, step: 1, default: 32 }
+            ],
+            "BERT": [
+                { id: "learning-rate", label: "Learning Rate", type: "number", min: 0.0001, max: 0.1, step: 0.0001, default: 0.005 }
+            ],
+            "ResNet": [
+                { id: "learning-rate", label: "Learning Rate", type: "number", min: 0.0001, max: 0.1, step: 0.0001, default: 0.01 },
+                { id: "batch-size", label: "Batch Size", type: "number", min: 1, max: 100, step: 1, default: 32 }
+            ]
         };
 
         function populateSpecificTasks(useCase) {
@@ -225,49 +236,44 @@
                 label.htmlFor = param.id;
                 label.textContent = param.label;
 
-                if (param.type === 'range') {
-                    const sliderContainer = document.createElement('div');
-                    sliderContainer.style.display = 'flex';
-                    sliderContainer.style.alignItems = 'center';
-                    sliderContainer.style.gap = '10px';
+                const input = document.createElement('input');
+                input.id = param.id;
+                input.type = param.type;
+                input.min = param.min;
+                if (param.step) input.step = param.step;
+                input.value = param.default || param.min;
 
-                    const minLabel = document.createElement('span');
-                    minLabel.textContent = param.min;
-
-                    const slider = document.createElement('input');
-                    slider.id = param.id;
-                    slider.type = 'range';
-                    slider.min = param.min;
-                    slider.max = param.max;
-                    slider.step = param.step;
-                    slider.value = param.default || param.min;
-
-                    const valueDisplay = document.createElement('span');
-                    valueDisplay.id = `${param.id}-display`;
-                    valueDisplay.textContent = slider.value;
-
-                    slider.addEventListener('input', () => {
-                        valueDisplay.textContent = slider.value;
-                    });
-
-                    sliderContainer.appendChild(minLabel);
-                    sliderContainer.appendChild(slider);
-                    sliderContainer.appendChild(valueDisplay);
-
-                    paramDiv.appendChild(label);
-                    paramDiv.appendChild(sliderContainer);
-                } else {
-                    const input = document.createElement('input');
-                    input.id = param.id;
-                    input.type = param.type;
-                    input.min = param.min;
-                    if (param.step) input.step = param.step;
-
-                    paramDiv.appendChild(label);
-                    paramDiv.appendChild(input);
-                }
+                paramDiv.appendChild(label);
+                paramDiv.appendChild(input);
 
                 dynamicParamsDiv.appendChild(paramDiv);
+            });
+        }
+
+        function populateModelSpecificParameters(model) {
+            const modelParamsDiv = document.getElementById('dynamic-parameters');
+            modelParamsDiv.innerHTML = '';
+
+            const parameters = modelSpecificParameters[model] || [];
+            parameters.forEach(param => {
+                const paramDiv = document.createElement('div');
+                paramDiv.classList.add('form-group');
+
+                const label = document.createElement('label');
+                label.htmlFor = param.id;
+                label.textContent = param.label;
+
+                const input = document.createElement('input');
+                input.id = param.id;
+                input.type = param.type;
+                input.min = param.min;
+                if (param.step) input.step = param.step;
+                input.value = param.default || param.min;
+
+                paramDiv.appendChild(label);
+                paramDiv.appendChild(input);
+
+                modelParamsDiv.appendChild(paramDiv);
             });
         }
 
@@ -279,6 +285,11 @@
             const selectedTask = this.value;
             populateDynamicParameters(selectedTask);
             populateSpecificModels(selectedTask);
+        });
+
+        document.getElementById('specific-model').addEventListener('change', function () {
+            const selectedModel = this.value;
+            populateModelSpecificParameters(selectedModel);
         });
 
         document.getElementById('add-job').addEventListener('click', function () {
