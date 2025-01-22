@@ -124,8 +124,16 @@
     
     // Define specific models for each task
 const taskModels = {
-	"Text-to-Text": 0.00468515625,
-	"Text-to-Image": 0.0013009765625
+    "language-model-fine-tuning": {
+        "GPT-3": 2,  // Assign numerical value 2 to GPT-3
+        "BERT": 0.2,  // Assign numerical value 0.2 to BERT
+        "T5": 1       // Assign numerical value 1 to T5
+    },
+    "custom-dataset-training": {
+        "ResNet": 1.5,
+        "VGG": 1,
+        "Inception": 0.8
+    }
 };
 
         const jobs = [];
@@ -133,13 +141,13 @@ const taskModels = {
             "research-planning": {
                 "literature-review-or-search": {
                     "Text-to-Text": [
-                        { id: "num-papers", label: "Number of articles/documents processed", type: "number", min: 1, default: 5, _energy: 0.00468515625*6000 }
+                        { id: "num-papers", label: "Number of articles/documents processed", type: "number", min: 1, default: 5, _en = 28.1109375 }
                     ]
                 },
                 "generation-of-materials-for-user-study": {
                     "Text-to-Text": [
-                        { id: "prompt-length", label: "Average length of prompts (in words)", type: "number", min: 1, default: 50, _energy: 0.00468515625 },
-                        { id: "num-prompts", label: "Number of prompts", type: "number", min: 1, default: 10, _energy = 0.0013009765625}
+                        { id: "prompt-length", label: "Average length of prompts (in words)", type: "number", min: 1, default: 50, _en = 0.00468515625},
+                        { id: "num-prompts", label: "Number of prompts", type: "number", min: 1, default: 10 }
                     ], 
                     "Text-to-Image": [
                         { id: "num-images", label: "Number of images generated", type: "number", min: 1, default: 50 },
@@ -242,6 +250,7 @@ const taskModels = {
 	    const useCase = document.getElementById('use-case').value;
 	    const specificTask = document.getElementById('specific-task').value;
             const specificModel = document.getElementById('specific-model').value; // Get 	selected model
+            const modelValue = taskModels[specificModel] ? taskModels[specificTask][specificModel] : 1;
 	    const carbonIntensity = 0.481;
 
 
