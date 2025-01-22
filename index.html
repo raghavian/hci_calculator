@@ -73,7 +73,7 @@
             padding: 5px;
             background-color: #e9ecef;
             border-radius: 4px;
-            font-size: 0.8em;
+            font-size: 0.75em;
         }
 
         #result {
@@ -92,6 +92,10 @@
 <body>
     <div class="calculator-container">
         <h1>HCI GenAI CO2st Calculator</h1>
+        
+        <div id="result">
+        <label> Your carbon footprint is approximately <br> 0.00000 kgCO2e</label>
+        </div>
 
         <div class="form-group">
             <label for="use-case">Select Research Phase:</label>
@@ -116,9 +120,7 @@
         
         <div id="dynamic-parameters"></div>
 
-        <div id="result">
-        <label> Your carbon footprint is approximately <br> 0.00000 kgCO2e</label>
-        </div>
+
         
         <button id="add-job">Add Use Case</button>
         <div id="jobs-list"></div>
