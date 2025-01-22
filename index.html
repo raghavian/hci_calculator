@@ -257,21 +257,14 @@ const taskModels = {
 	    // Retrieve additional parameters for the specific task
 	    const dynamicParamsDiv = document.getElementById('dynamic-parameters');
 	    const additionalParams = {};
+	    const energy = 0.001
 	    Array.from(dynamicParamsDiv.querySelectorAll('input')).forEach(input => {
 		if (input.type === 'number' || input.type === 'range' ) {
 		    additionalParams[input.id] = parseFloat(input.value);
+		if (input.hasOwnProperty("_en")){
+		energy = input._en}
 		}
 	    });
-	    
-	    // Get the list of parameters (including _en) for the task and model
-		const taskModelParams = optionsHierarchy[useCase][SpecificTask][specificModel];
-
-		// Add _en values to additionalParams
-		taskModelParams.forEach(param => {
-		    if (param._en) {
-			additionalParams[param.id] = param._en; // Include the _en value
-		    }
-		});
 
 	    // Example: Adjust carbon footprint calculation based on additional parameters
 	    let additionalFactor = 1; // Default factor
@@ -280,7 +273,7 @@ const taskModels = {
 	    });
 
 	    // Calculate carbon footprint with additional parameters
-	    const carbonFootprint = carbonIntensity * additionalFactor;
+	    const carbonFootprint = carbonIntensity * additionalFactor * energy;
 
 	    const job = {
 		useCase: `${useCase} #${useCaseCounter}`, // Append the counter to the use case
