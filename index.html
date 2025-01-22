@@ -318,6 +318,8 @@ function populateSpecificModels(task) {
 	    const useCase = document.getElementById('use-case').value;
 	    const specificTask = document.getElementById('specific-task').value;
             const specificModel = document.getElementById('specific-model').value; // Get 	selected model
+            const modelValue = taskModels[specificTask] ? taskModels[specificTask][specificModel] : 1;
+
 	    const trainingTime = parseFloat(document.getElementById('training-time').value);
 	    const carbonIntensity = parseFloat(document.getElementById('carbon-intensity').value);
 	    const powerUsage = parseFloat(document.getElementById('power-usage').value);
@@ -338,7 +340,7 @@ function populateSpecificModels(task) {
 	    });
 
 	    // Calculate carbon footprint with additional parameters
-	    const carbonFootprint = trainingTime * carbonIntensity * powerUsage * additionalFactor*specificModel;
+	    const carbonFootprint = trainingTime * carbonIntensity * powerUsage * additionalFactor*modelValue;
 
 	    const job = {
 		useCase: `${useCase} #${useCaseCounter}`, // Append the counter to the use case
