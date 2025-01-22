@@ -226,34 +226,37 @@
 	    populateSpecificTasks(initialUseCase);
 	});
 
-        document.getElementById('add-job').addEventListener('click', function () {
-            const useCase = document.getElementById('use-case').value;
-            const specificTask = document.getElementById('specific-task').value;
-            const trainingTime = parseFloat(document.getElementById('training-time').value);
-            const carbonIntensity = parseFloat(document.getElementById('carbon-intensity').value);
-            const powerUsage = parseFloat(document.getElementById('power-usage').value);
 
-            const job = {
-                useCase,
-                specificTask,
-                trainingTime,
-                carbonIntensity,
-                powerUsage,
-                parameters: []
-            };
+	let useCaseCounter = 1; // Initialize counter for Use Case
 
-            const dynamicParams = document.querySelectorAll('#dynamic-parameters input');
-            dynamicParams.forEach(input => {
-                job.parameters.push({ id: input.id, value: parseFloat(input.value) });
-            });
+	document.getElementById('add-job').addEventListener('click', function () {
+	    const useCase = document.getElementById('use-case').value;
+	    const specificTask = document.getElementById('specific-task').value;
+	    const trainingTime = parseFloat(document.getElementById('training-time').value);
+	    const carbonIntensity = parseFloat(document.getElementById('carbon-intensity').value);
+	    const powerUsage = parseFloat(document.getElementById('power-usage').value);
 
-            jobs.push(job);
+	    const job = {
+		useCase: `${useCase} #${useCaseCounter}`, // Append the counter to the use case
+		specificTask,
+		trainingTime,
+		carbonIntensity,
+		powerUsage
+	    };
 
-            const jobItem = document.createElement('div');
-            jobItem.classList.add('job-item');
-            jobItem.textContent = `Use Case: ${useCase}, Task: ${specificTask}, Training Time: ${trainingTime} hours`;
-            document.getElementById('jobs-list').appendChild(jobItem);
-        });
+	    jobs.push(job);
+
+	    // Display the added job in the job list
+	    const jobsList = document.getElementById('jobs-list');
+	    const jobItem = document.createElement('div');
+	    jobItem.classList.add('job-item');
+	    jobItem.textContent = `Use Case: ${job.useCase}, Task: ${specificTask}, Training Time: ${trainingTime} hours, Carbon Intensity: ${carbonIntensity} kgCO2e/kWh, PUE: ${powerUsage}`;
+	    jobsList.appendChild(jobItem);
+
+	    // Increment the counter
+	    useCaseCounter++;
+	});
+
 
         document.getElementById('calculate').addEventListener('click', function () {
             let totalFootprint = 0;
