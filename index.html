@@ -258,8 +258,11 @@ const taskModels = {
 	    const dynamicParamsDiv = document.getElementById('dynamic-parameters');
 	    const additionalParams = {};
 	    Array.from(dynamicParamsDiv.querySelectorAll('input')).forEach(input => {
-		if (input.type === 'number' || input.type === 'range' || input._en) {
+		if (input.type === 'number' || input.type === 'range' ) {
 		    additionalParams[input.id] = parseFloat(input.value);
+		}
+		if (input._en){
+		   additionalParams[input.id] = parseFloat(input._en);
 		}
 	    });
 
