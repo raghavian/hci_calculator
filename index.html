@@ -1,3 +1,13 @@
+Yes, you can have a double conditional setup, where the available model-specific parameters depend on both the selected **use case** and the selected **model**. This allows you to display a different set of parameters for a model based on the use case.
+
+Here’s how we can modify the existing code to achieve this:
+
+### Approach:
+1. **Use Case-Model Conditional Parameters**: We define model parameters that are specific to both the use case and the model. 
+2. **Dynamic Parameter Population**: Based on both the selected use case and model, the form will display the correct parameters for that model in the context of the use case.
+
+### Updated Code Example:
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -167,17 +177,20 @@
         };
 
         const modelSpecificParameters = {
-            "GPT-3": [
-                { id: "learning-rate", label: "Learning Rate", type: "number", min: 0.0001, max: 0.1, step: 0.0001, default: 0.01 },
-                { id: "batch-size", label: "Batch Size", type: "number", min: 1, max: 100, step: 1, default: 32 }
-            ],
-            "BERT": [
-                { id: "learning-rate", label: "Learning Rate", type: "number", min: 0.0001, max: 0.1, step: 0.0001, default: 0.005 }
-            ],
-            "ResNet": [
-                { id: "learning-rate", label: "Learning Rate", type: "number", min: 0.0001, max: 0.1, step: 0.0001, default: 0.01 },
-                { id: "batch-size", label: "Batch Size", type: "number", min: 1, max: 100, step: 1, default: 32 }
-            ]
+            "ResNet": {
+                "research-planning": [
+                    { id: "learning-rate", label: "Learning Rate", type: "number", min: 0.0001, max: 0.1, step: 0.0001, default: 0.01 },
+                    { id: "batch-size", label: "Batch Size", type: "number", min: 1, max: 100, step: 1, default: 32 }
+                ],
+                "training-fine-tuning": [
+                    { id: "dropout-rate", label: "Dropout Rate", type: "number", min: 0.0, max: 1.0, step: 0.01, default: 0.5 }
+                ]
+            },
+            "VGG": {
+                "research-planning": [
+                    { id: "learning-rate", label: "Learning Rate", type: "number", min: 0.0001, max: 0.1, step: 0.0001, default: 0.005 }
+                ]
+            }
         };
 
         function populateSpecificTasks(useCase) {
@@ -223,12 +236,12 @@
             specificModelSelect.dispatchEvent(new Event('change'));
         }
 
-        function populateDynamicParameters(task) {
+        function populateDynamicParameters(useCase, model) {
             const dynamicParamsDiv = document.getElementById('dynamic-parameters');
             dynamicParamsDiv.innerHTML = '';
 
-            const parameters = taskParameters[task] || [];
-            parameters.forEach(param => {
+            const modelParams = modelSpecificParameters[model] ? modelSpecificParameters[model][useCase] : [];
+            modelParams.forEach(param => {
                 const paramDiv = document.createElement('div');
                 paramDiv.classList.add('form-group');
 
@@ -250,46 +263,24 @@
             });
         }
 
-        function populateModelSpecificParameters(model) {
-            const modelParamsDiv = document.getElementById('dynamic-parameters');
-            modelParamsDiv.innerHTML = '';
-
-            const parameters = modelSpecificParameters[model] || [];
-            parameters.forEach(param => {
-                const paramDiv = document.createElement('div');
-                paramDiv.classList.add('form-group');
-
-                const label = document.createElement('label');
-                label.htmlFor = param.id;
-                label.textContent = param.label;
-
-                const input = document.createElement('input');
-                input.id = param.id;
-                input.type = param.type;
-                input.min = param.min;
-                if (param.step) input.step = param.step;
-                input.value = param.default || param.min;
-
-                paramDiv.appendChild(label);
-                paramDiv.appendChild(input);
-
-                modelParamsDiv.appendChild(paramDiv);
-            });
-        }
-
         document.getElementById('use-case').addEventListener('change', function () {
-            populateSpecificTasks(this.value);
+            const useCase = this.value;
+            populateSpecificTasks(useCase);
         });
 
         document.getElementById('specific-task').addEventListener('change', function () {
             const selectedTask = this.value;
-            populateDynamicParameters(selectedTask);
+            const selectedUseCase = document.getElementById('use-case').value;
+
+            populateDynamicParameters(selectedUseCase, selectedTask);
             populateSpecificModels(selectedTask);
         });
 
         document.getElementById('specific-model').addEventListener('change', function () {
             const selectedModel = this.value;
-            populateModelSpecificParameters(selectedModel);
+            const selectedUseCase = document.getElementById('use-case').value;
+            
+            populateDynamicParameters(selectedUseCase, selectedModel);
         });
 
         document.getElementById('add-job').addEventListener('click', function () {
@@ -356,4 +347,12 @@
     </script>
 </body>
 </html>
+```
 
+### Key Updates:
+1. **Model-Specific Parameters for Different Use Cases**: Now, the parameters are conditional based on **both** the use case and the selected model. For example:
+   - For **ResNet** in the `research-planning` use case, you'll see parameters like `learning-rate` and `batch-size`.
+   - For **ResNet** in the `training-fine-tuning` use case, you'll see a different parameter like `dropout-rate`.
+2. **Dynamic Parameter Population**: The parameters for the selected model change based on the selected use case and model.
+
+This setup allows you to define specific parameters for each model based on the context of the selected use case, providing a flexible double conditional logic for parameter rendering.
