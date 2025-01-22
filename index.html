@@ -191,30 +191,40 @@
             populateDynamicParameters(this.value);
         });
 
-        document.getElementById('use-case').addEventListener('change', function () {
-            const specificTaskSelect = document.getElementById('specific-task');
-            specificTaskSelect.innerHTML = ''; // Clear old options
+	document.getElementById('use-case').addEventListener('change', function () {
+	    populateSpecificTasks(this.value);
+	});
 
-            let tasks = [];
-            switch (this.value) {
-                case "research-planning":
-                    tasks = ["literature-review", "goal-definition"];
-                    break;
-                case "training-fine-tuning":
-                    tasks = ["language-model-fine-tuning", "custom-dataset-training"];
-                    break;
-                // Add more cases for other use cases
-            }
+	function populateSpecificTasks(useCase) {
+	    const specificTaskSelect = document.getElementById('specific-task');
+	    specificTaskSelect.innerHTML = ''; // Clear old options
 
-            tasks.forEach(task => {
-                const option = document.createElement('option');
-                option.value = task;
-                option.textContent = task.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-                specificTaskSelect.appendChild(option);
-            });
+	    let tasks = [];
+	    switch (useCase) {
+		case "research-planning":
+		    tasks = ["literature-review", "goal-definition"];
+		    break;
+		case "training-fine-tuning":
+		    tasks = ["language-model-fine-tuning", "custom-dataset-training"];
+		    break;
+		// Add more cases for other use cases
+	    }
 
-            specificTaskSelect.dispatchEvent(new Event('change'));
-        });
+	    tasks.forEach(task => {
+		const option = document.createElement('option');
+		option.value = task;
+		option.textContent = task.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+		specificTaskSelect.appendChild(option);
+	    });
+
+	    specificTaskSelect.dispatchEvent(new Event('change')); // Trigger task parameter population
+	}
+
+	// Initialize the dropdown on page load
+	document.addEventListener('DOMContentLoaded', function () {
+	    const initialUseCase = document.getElementById('use-case').value;
+	    populateSpecificTasks(initialUseCase);
+	});
 
         document.getElementById('add-job').addEventListener('click', function () {
             const useCase = document.getElementById('use-case').value;
