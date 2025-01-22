@@ -110,6 +110,13 @@
 
         <div id="dynamic-parameters"></div>
 
+	<div class="form-group">
+	    <label for="specific-model">Select Specific Model:</label>
+	    <select id="specific-model" required>
+		<!-- Model options will be dynamically populated -->
+	    </select>
+	</div>
+
         <div class="form-group">
             <label for="training-time">Training Time (in hours):</label>
             <div style="display: flex; align-items: center; gap: 10px;">
@@ -119,7 +126,6 @@
                 <span id="max-training-time">100</span>
             </div>
         </div>
-
 
         <div class="form-group">
             <label for="carbon-intensity">Carbon Intensity (kgCO2e/kWh):</label>
@@ -140,6 +146,7 @@
     <script>
         const jobs = [];
 
+
         const taskParameters = {
             "literature-review": [
                 { id: "num-papers", label: "Number of Papers Reviewed", type: "range", min: 1, max: 100, step: 1, default:1 },
@@ -158,6 +165,20 @@
                 { id: "training-batch-size", label: "Training Batch Size", type: "number", min: 1 }
             ]
         };
+// Define specific models for each task
+const taskModels = {
+    "language-model-fine-tuning": {
+        "GPT-3": 2,  // Assign numerical value 2 to GPT-3
+        "BERT": 0.2,  // Assign numerical value 0.2 to BERT
+        "T5": 1       // Assign numerical value 1 to T5
+    },
+    "custom-dataset-training": {
+        "ResNet": 1.5,
+        "VGG": 1,
+        "Inception": 0.8
+    }
+};
+
 
 function populateDynamicParameters(task) {
     const dynamicParamsDiv = document.getElementById('dynamic-parameters');
@@ -220,18 +241,42 @@ function populateDynamicParameters(task) {
     });
 }
 
+function populateSpecificModels(task) {
+    const specificModelSelect = document.getElementById('specific-model');
+    specificModelSelect.innerHTML = ''; // Clear old options
+
+    let models = [];
+    if (taskModels[task]) {
+        models = Object.keys(taskModels[task]);  // Get model names as options
+    }
+
+    models.forEach(model => {
+        const option = document.createElement('option');
+        option.value = model;
+        option.textContent = model;
+        specificModelSelect.appendChild(option);
+    });
+
+    specificModelSelect.dispatchEvent(new Event('change')); // Trigger any changes on model selection
+}
+
+
 
         document.getElementById('training-time').addEventListener('input', function () {
             document.getElementById('training-time-display').textContent = this.value;
         });
 
-        document.getElementById('specific-task').addEventListener('change', function () {
-            populateDynamicParameters(this.value);
-        });
+	document.getElementById('specific-task').addEventListener('change', function () {
+	    const selectedTask = this.value;
+	    populateDynamicParameters(selectedTask);
+	    populateSpecificModels(selectedTask); // Populate the model dropdown when task changes
+	});
 
 	document.getElementById('use-case').addEventListener('change', function () {
 	    populateSpecificTasks(this.value);
 	});
+	
+	
 
 	function populateSpecificTasks(useCase) {
 	    const specificTaskSelect = document.getElementById('specific-task');
@@ -270,6 +315,7 @@ function populateDynamicParameters(task) {
 	document.getElementById('add-job').addEventListener('click', function () {
 	    const useCase = document.getElementById('use-case').value;
 	    const specificTask = document.getElementById('specific-task').value;
+            const specificModel = document.getElementById('specific-model').value; // Get 	selected model
 	    const trainingTime = parseFloat(document.getElementById('training-time').value);
 	    const carbonIntensity = parseFloat(document.getElementById('carbon-intensity').value);
 	    const powerUsage = parseFloat(document.getElementById('power-usage').value);
@@ -290,11 +336,12 @@ function populateDynamicParameters(task) {
 	    });
 
 	    // Calculate carbon footprint with additional parameters
-	    const carbonFootprint = trainingTime * carbonIntensity * powerUsage * additionalFactor;
+	    const carbonFootprint = trainingTime * carbonIntensity * powerUsage * additionalFactor*specificModel;
 
 	    const job = {
 		useCase: `${useCase} #${useCaseCounter}`, // Append the counter to the use case
 		specificTask,
+		specificModel,
 		trainingTime,
 		carbonIntensity,
 		powerUsage,
