@@ -277,7 +277,7 @@
 	    jobItem.classList.add('job-item');
     	jobItem.innerHTML = `
 	${useCaseCounter}. ${useCase.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}; ${job.specificTask.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}; ${job.specificModel.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}:
-${carbonFootprint.toFixed(5)} `;
+${carbonFootprint.toFixed(5)} kgCO2e`;
 	    jobsList.appendChild(jobItem);
 
 	    // Increment the counter
