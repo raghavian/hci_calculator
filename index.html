@@ -273,7 +273,24 @@ function populateDynamicParameters(task) {
 	    const carbonIntensity = parseFloat(document.getElementById('carbon-intensity').value);
 	    const powerUsage = parseFloat(document.getElementById('power-usage').value);
 
-	    const carbonFootprint = trainingTime * carbonIntensity * powerUsage;
+	    // Retrieve additional parameters for the specific task
+	    const dynamicParamsDiv = document.getElementById('dynamic-parameters');
+	    const additionalParams = {};
+	    Array.from(dynamicParamsDiv.querySelectorAll('input')).forEach(input => {
+		if (input.type === 'number' || input.type === 'range') {
+		    additionalParams[input.id] = parseFloat(input.value);
+		}
+	    });
+
+	    // Example: Adjust carbon footprint calculation based on additional parameters
+	    let additionalFactor = 1; // Default factor
+	    Object.values(additionalParams).forEach(value => {
+		additionalFactor += value / 100; // Example adjustment (scale as needed)
+	    });
+
+	    // Calculate carbon footprint with additional parameters
+	    const carbonFootprint = trainingTime * carbonIntensity * powerUsage * additionalFactor;
+
 	    const job = {
 		useCase: `${useCase} #${useCaseCounter}`, // Append the counter to the use case
 		specificTask,
