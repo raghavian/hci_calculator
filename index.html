@@ -268,17 +268,17 @@ function populateSpecificModels(task) {
             document.getElementById('training-time-display').textContent = this.value;
         });
 
-	document.getElementById('specific-task').addEventListener('change', function () {
-	    const selectedTask = this.value;
-	    populateDynamicParameters(selectedTask);
-	    populateSpecificModels(selectedTask); // Populate the model dropdown when task changes
-	});
+	
 
 	document.getElementById('use-case').addEventListener('change', function () {
 	    populateSpecificTasks(this.value);
 	});
 	
-	
+	document.getElementById('specific-task').addEventListener('change', function () {
+	    const selectedTask = this.value;
+	    populateDynamicParameters(selectedTask);
+	    populateSpecificModels(selectedTask); // Populate the model dropdown when task changes
+	});
 
 	function populateSpecificTasks(useCase) {
 	    const specificTaskSelect = document.getElementById('specific-task');
