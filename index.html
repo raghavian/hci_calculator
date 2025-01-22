@@ -250,7 +250,7 @@ const taskModels = {
 	    const useCase = document.getElementById('use-case').value;
 	    const specificTask = document.getElementById('specific-task').value;
             const specificModel = document.getElementById('specific-model').value; // Get 	selected model
-            const energy = optionsHierarchy[useCase]?.[specificTask]?.[specificModel]._en || 0.001;
+            const energy = optionsHierarchy[useCase]?.[specificTask]?.[specificModel][0]["_en"] || 0.00;
 	    const carbonIntensity = 0.481;
 
 
