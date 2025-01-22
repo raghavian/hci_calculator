@@ -3,247 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deep Learning Carbon Footprint Calculator</title>
+    <title>Carbon Footprint Calculator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
+            margin: 20px;
         }
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        label {
-            font-weight: bold;
-        }
+
         .form-group {
             margin-bottom: 15px;
         }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
+
+        label {
             display: block;
+            margin-bottom: 5px;
+        }
+
+        input, select, button {
             width: 100%;
-            padding: 10px;
-            background: #007BFF;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
             cursor: pointer;
-            font-size: 16px;
         }
+
         button:hover {
-            background: #0056b3;
+            background-color: #45a049;
         }
-        .result, .jobs {
+
+        #result {
             margin-top: 20px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-left: 4px solid #007BFF;
-        }
-        .job-item {
-            padding: 5px 0;
-            border-bottom: 1px solid #ccc;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Carbon Footprint Calculator</h1>
-        <form id="calculator">
-            <div class="form-group">
-                <label for="use-case">Select High-Level Use Case:</label>
-                <select id="use-case" required>
-                    <option value="research-planning">Research & Planning</option>
-                    <option value="prototyping-building">Prototyping & Building</option>
-                    <option value="evaluation-user-studies">Evaluation & User Studies</option>
-                    <option value="data-collection">Data Collection</option>
-                    <option value="analysis-synthesis">Analysis & Synthesis</option>
-                    <option value="dissemination-communication">Dissemination & Communication</option>
-                    <option value="training-fine-tuning">Training & Fine-tuning</option>
-                </select>
-            </div>
+    <h1>Carbon Footprint Calculator</h1>
 
-            <div class="form-group">
-                <label for="specific-task">Select Specific Task:</label>
-                <select id="specific-task" required>
-                    <!-- Task options will be dynamically populated -->
-                </select>
-            </div>
+    <div class="form-group">
+        <label for="use-case">Select Use Case:</label>
+        <select id="use-case" required>
+            <option value="research-planning">Research & Planning</option>
+            <option value="prototyping-building">Prototyping & Building</option>
+            <option value="evaluation-user-studies">Evaluation & User Studies</option>
+            <option value="data-collection">Data Collection</option>
+            <option value="analysis-synthesis">Analysis & Synthesis</option>
+            <option value="dissemination-communication">Dissemination & Communication</option>
+            <option value="training-fine-tuning">Training & Fine-tuning</option>
+        </select>
+    </div>
 
-            
-            <div class="form-group">
-            <label for="training-time">Training Time (in hours):</label>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <span id="min-training-time">1</span>
-                <input type="range" id="training-time" min="1" max="100" value="1" step="1" required style="flex-grow: 1;">
-                <span id="training-time-display">1</span> hours
-                <span id="max-training-time">100</span>
-            </div>
-        </div>
+    <div class="form-group">
+        <label for="specific-task">Select Specific Task:</label>
+        <select id="specific-task" required>
+            <!-- Task options will be dynamically populated -->
+        </select>
+    </div>
 
-            <div class="form-group">
-                <label for="num-gpus">Number of GPUs:</label>
-                <input type="number" id="num-gpus" min="1" required>
-            </div>
+    <div id="dynamic-parameters"></div>
 
-            <div class="form-group">
-                <label for="gpu-type">GPU Type:</label>
-                <select id="gpu-type" required>
-                    <option value="a100">NVIDIA A100</option>
-                    <option value="v100">NVIDIA V100</option>
-                    <option value="t4">NVIDIA T4</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="carbon-intensity">Carbon Intensity of Grid (gCO<sub>2</sub>/kWh):</label>
-                <input type="number" id="carbon-intensity" value="400" required>
-            </div>
-
-            <button type="button" id="add-job">Add Job</button>
-        </form>
-
-        <div class="jobs" id="jobs-list" style="display:none;">
-            <h2>Jobs</h2>
-            <div id="job-items"></div>
-        </div>
-
-        <div id="result" class="result" style="display:none;">
-            <h2>Total Carbon Footprint</h2>
-            <p id="output"></p>
+    <div class="form-group">
+        <label for="training-time">Training Time (in hours):</label>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span id="min-training-time">1</span>
+            <input type="range" id="training-time" min="1" max="100" value="1" step="1" required style="flex-grow: 1;">
+            <span id="training-time-display">1</span> hours
+            <span id="max-training-time">100</span>
         </div>
     </div>
 
+    <div class="form-group">
+        <label for="carbon-intensity">Carbon Intensity (kgCO2e/kWh):</label>
+        <input type="number" id="carbon-intensity" min="0" step="0.01" value="0.45" required>
+    </div>
 
-    <!-- Dynamic parameters container -->
-    <div id="dynamic-parameters"></div>
+    <div class="form-group">
+        <label for="power-usage">Power Usage Effectiveness (PUE):</label>
+        <input type="number" id="power-usage" min="1" step="0.01" value="1.58" required>
+    </div>
+
+    <button id="calculate">Calculate Carbon Footprint</button>
+
+    <div id="result"></div>
 
     <script>
-        const gpuPower = {
-            a100: 400, // Watts
-            v100: 300, // Watts
-            t4: 70   // Watts
-        };
-
-        const useCaseOptions = {
-            "research-planning": [
-                { value: "literature-review", label: "Literature Review" },
-                { value: "goal-definition", label: "Goal Definition" }
+        const taskParameters = {
+            "literature-review": [
+                { id: "num-papers", label: "Number of Papers Reviewed", type: "number", min: 1 },
+                { id: "search-databases", label: "Number of Databases Used", type: "number", min: 1 }
             ],
-            "prototyping-building": [
-                { value: "ui-prototyping", label: "UI Prototyping" },
-                { value: "backend-architecture", label: "Backend Architecture" }
+            "goal-definition": [
+                { id: "num-meetings", label: "Number of Team Meetings", type: "number", min: 1 },
+                { id: "duration-per-meeting", label: "Average Meeting Duration (hours)", type: "number", min: 0.5, step: 0.1 }
             ],
-            "evaluation-user-studies": [
-                { value: "usability-testing", label: "Usability Testing" },
-                { value: "focus-groups", label: "Focus Groups" }
+            "language-model-fine-tuning": [
+                { id: "num-epochs", label: "Number of Epochs", type: "number", min: 1 },
+                { id: "dataset-size", label: "Dataset Size (GB)", type: "number", min: 0.1, step: 0.1 }
             ],
-            "data-collection": [
-                { value: "survey-design", label: "Survey Design" },
-                { value: "field-observation", label: "Field Observation" }
-            ],
-            "analysis-synthesis": [
-                { value: "qualitative-analysis", label: "Qualitative Analysis" },
-                { value: "statistical-analysis", label: "Statistical Analysis" }
-            ],
-            "dissemination-communication": [
-                { value: "report-writing", label: "Report Writing" },
-                { value: "presentation-preparation", label: "Presentation Preparation" }
-            ],
-            "training-fine-tuning": [
-                { value: "language-model-fine-tuning", label: "Language Model Fine-tuning" },
-                { value: "custom-dataset-training", label: "Custom Dataset Training" }
+            "custom-dataset-training": [
+                { id: "num-layers", label: "Number of Layers in the Model", type: "number", min: 1 },
+                { id: "training-batch-size", label: "Training Batch Size", type: "number", min: 1 }
             ]
         };
 
-        const jobs = [];
-
-        document.getElementById('training-time').addEventListener('input', function () {
-            document.getElementById('training-time-display').textContent = this.value;
-        });
-
-        document.getElementById('use-case').addEventListener('change', function () {
-            const useCase = this.value;
-            const specificTaskSelect = document.getElementById('specific-task');
-
-            // Clear existing options
-            specificTaskSelect.innerHTML = '';
-
-            // Populate specific task options based on use case
-            const options = useCaseOptions[useCase] || [];
-            options.forEach(option => {
-                const opt = document.createElement('option');
-                opt.value = option.value;
-                opt.textContent = option.label;
-                specificTaskSelect.appendChild(opt);
-            });
-        });
-
-        // Define additional parameter sets for specific tasks
-const taskParameters = {
-    "literature-review": [
-        { id: "num-papers", label: "Number of Papers Reviewed", type: "number", min: 1 },
-        { id: "search-databases", label: "Number of Databases Used", type: "number", min: 1 }
-    ],
-    "goal-definition": [
-        { id: "num-meetings", label: "Number of Team Meetings", type: "number", min: 1 },
-        { id: "duration-per-meeting", label: "Average Meeting Duration (in hours)", type: "number", min: 0.5, step: 0.1 }
-    ],
-    "language-model-fine-tuning": [
-        { id: "num-epochs", label: "Number of Epochs", type: "number", min: 1 },
-        { id: "dataset-size", label: "Dataset Size (in GB)", type: "number", min: 0.1, step: 0.1 }
-    ],
-    "custom-dataset-training": [
-        { id: "num-layers", label: "Number of Layers in the Model", type: "number", min: 1 },
-        { id: "training-batch-size", label: "Training Batch Size", type: "number", min: 1 }
-    ]
-};
-
-
-
-// Listen for changes in the specific task dropdown
-document.getElementById('specific-task').addEventListener('change', function () {
-    const selectedTask = this.value;
-    populateDynamicParameters(selectedTask);
-});
-
-// Initial population of dynamic parameters
-document.getElementById('use-case').addEventListener('change', function () {
-    const specificTaskSelect = document.getElementById('specific-task');
-    const selectedTask = specificTaskSelect.value;
-    populateDynamicParameters(selectedTask);
-});
-
-
-        // Trigger the change event on page load to populate initial specific task options
-        document.getElementById('use-case').dispatchEvent(new Event('change'));
-
-        document.getElementById('add-job').addEventListener('click', function() {
-            const useCase = document.getElementById('use-case').value;
-            const specificTask = document.getElementById('specific-task').value;
-            const trainingTime = parseFloat(document.getElementById('training-time').value);
-            const numGpus = parseInt(document.getElementById('num-gpus').value, 10);
-            const gpuType = document.getElementById('gpu-type').value;
-            const carbonIntensity = parseFloat(document.getElementById('carbon-intensity').value);
-
-            // Function to populate dynamic parameters based on task
         function populateDynamicParameters(task) {
             const dynamicParamsDiv = document.getElementById('dynamic-parameters');
             dynamicParamsDiv.innerHTML = ''; // Clear previous parameters
@@ -252,6 +123,7 @@ document.getElementById('use-case').addEventListener('change', function () {
             parameters.forEach(param => {
                 const paramDiv = document.createElement('div');
                 paramDiv.classList.add('form-group');
+
                 const label = document.createElement('label');
                 label.htmlFor = param.id;
                 label.textContent = param.label;
@@ -267,36 +139,51 @@ document.getElementById('use-case').addEventListener('change', function () {
                 dynamicParamsDiv.appendChild(paramDiv);
             });
         }
-            // Calculate power consumption in kWh
-            const powerPerGpu = gpuPower[gpuType];
-            const totalPower = (powerPerGpu * numGpus * trainingTime) / 1000; // kWh
 
-            // Calculate carbon footprint
-            const carbonFootprint = totalPower * carbonIntensity; // gCO2
-
-            // Add job to the list
-            jobs.push({ useCase, specificTask, trainingTime, numGpus, gpuType, carbonFootprint });
-
-            // Update job list display
-            const jobItems = document.getElementById('job-items');
-            const jobDiv = document.createElement('div');
-            jobDiv.classList.add('job-item');
-            jobDiv.textContent = `${useCase.toUpperCase()} (${specificTask}) - ${carbonFootprint.toFixed(2)} gCO2`;
-            jobItems.appendChild(jobDiv);
-
-            document.getElementById('jobs-list').style.display = 'block';
-
-            // Update total footprint
-            updateTotalFootprint();
+        document.getElementById('training-time').addEventListener('input', function () {
+            document.getElementById('training-time-display').textContent = this.value;
         });
 
-        function updateTotalFootprint() {
-            const totalFootprint = jobs.reduce((sum, job) => sum + job.carbonFootprint, 0);
-            const resultDiv = document.getElementById('result');
-            const output = document.getElementById('output');
-            output.textContent = `The total estimated carbon footprint is ${totalFootprint.toFixed(2)} grams of CO2.`;
-            resultDiv.style.display = 'block';
-        }
+        document.getElementById('specific-task').addEventListener('change', function () {
+            populateDynamicParameters(this.value);
+        });
+
+        document.getElementById('use-case').addEventListener('change', function () {
+            const specificTaskSelect = document.getElementById('specific-task');
+            specificTaskSelect.innerHTML = ''; // Clear old options
+
+            let tasks = [];
+            switch (this.value) {
+                case "research-planning":
+                    tasks = ["literature-review", "goal-definition"];
+                    break;
+                case "training-fine-tuning":
+                    tasks = ["language-model-fine-tuning", "custom-dataset-training"];
+                    break;
+                // Add more cases for other use cases
+            }
+
+            tasks.forEach(task => {
+                const option = document.createElement('option');
+                option.value = task;
+                option.textContent = task.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                specificTaskSelect.appendChild(option);
+            });
+
+            specificTaskSelect.dispatchEvent(new Event('change'));
+        });
+
+        document.getElementById('calculate').addEventListener('click', function () {
+            const trainingTime = parseFloat(document.getElementById('training-time').value);
+            const carbonIntensity = parseFloat(document.getElementById('carbon-intensity').value);
+            const powerUsage = parseFloat(document.getElementById('power-usage').value);
+
+            const carbonFootprint = trainingTime * carbonIntensity * powerUsage;
+
+            document.getElementById('result').textContent = `Estimated Carbon Footprint: ${carbonFootprint.toFixed(2)} kgCO2e`;
+        });
+
+        document.getElementById('use-case').dispatchEvent(new Event('change'));
     </script>
 </body>
 </html>
