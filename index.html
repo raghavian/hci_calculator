@@ -7,7 +7,23 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .calculator-container {
+            width: 90%;
+            max-width: 600px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .form-group {
@@ -69,56 +85,57 @@
     </style>
 </head>
 <body>
-    <h1>Carbon Footprint Calculator</h1>
+    <div class="calculator-container">
+        <h1>Carbon Footprint Calculator</h1>
 
-    <div class="form-group">
-        <label for="use-case">Select Use Case:</label>
-        <select id="use-case" required>
-            <option value="research-planning">Research & Planning</option>
-            <option value="prototyping-building">Prototyping & Building</option>
-            <option value="evaluation-user-studies">Evaluation & User Studies</option>
-            <option value="data-collection">Data Collection</option>
-            <option value="analysis-synthesis">Analysis & Synthesis</option>
-            <option value="dissemination-communication">Dissemination & Communication</option>
-            <option value="training-fine-tuning">Training & Fine-tuning</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="specific-task">Select Specific Task:</label>
-        <select id="specific-task" required>
-            <!-- Task options will be dynamically populated -->
-        </select>
-    </div>
-
-    <div id="dynamic-parameters"></div>
-
-    <div class="form-group">
-        <label for="training-time">Training Time (in hours):</label>
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <span id="min-training-time">1</span>
-            <input type="range" id="training-time" min="1" max="100" value="1" step="1" required style="flex-grow: 1;">
-            <span id="training-time-display">1</span> hours
-            <span id="max-training-time">100</span>
+        <div class="form-group">
+            <label for="use-case">Select Use Case:</label>
+            <select id="use-case" required>
+                <option value="research-planning">Research & Planning</option>
+                <option value="prototyping-building">Prototyping & Building</option>
+                <option value="evaluation-user-studies">Evaluation & User Studies</option>
+                <option value="data-collection">Data Collection</option>
+                <option value="analysis-synthesis">Analysis & Synthesis</option>
+                <option value="dissemination-communication">Dissemination & Communication</option>
+                <option value="training-fine-tuning">Training & Fine-tuning</option>
+            </select>
         </div>
+
+        <div class="form-group">
+            <label for="specific-task">Select Specific Task:</label>
+            <select id="specific-task" required>
+                <!-- Task options will be dynamically populated -->
+            </select>
+        </div>
+
+        <div id="dynamic-parameters"></div>
+
+        <div class="form-group">
+            <label for="training-time">Training Time (in hours):</label>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span id="min-training-time">1</span>
+                <input type="range" id="training-time" min="1" max="100" value="1" step="1" required style="flex-grow: 1;">
+                <span id="training-time-display">1</span> hours
+                <span id="max-training-time">100</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="carbon-intensity">Carbon Intensity (kgCO2e/kWh):</label>
+            <input type="number" id="carbon-intensity" min="0" step="0.01" value="0.45" required>
+        </div>
+
+        <div class="form-group">
+            <label for="power-usage">Power Usage Effectiveness (PUE):</label>
+            <input type="number" id="power-usage" min="1" step="0.01" value="1.58" required>
+        </div>
+
+        <button id="add-job">Add Job</button>
+        <button id="calculate">Calculate Total Carbon Footprint</button>
+
+        <div id="jobs-list"></div>
+        <div id="result"></div>
     </div>
-
-    <div class="form-group">
-        <label for="carbon-intensity">Carbon Intensity (kgCO2e/kWh):</label>
-        <input type="number" id="carbon-intensity" min="0" step="0.01" value="0.45" required>
-    </div>
-
-    <div class="form-group">
-        <label for="power-usage">Power Usage Effectiveness (PUE):</label>
-        <input type="number" id="power-usage" min="1" step="0.01" value="1.58" required>
-    </div>
-
-    <button id="add-job">Add Job</button>
-    <button id="calculate">Calculate Total Carbon Footprint</button>
-
-    <div id="jobs-list"></div>
-    <div id="result"></div>
-
     <script>
         const jobs = [];
 
