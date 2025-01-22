@@ -250,19 +250,16 @@ const taskModels = {
 	    const useCase = document.getElementById('use-case').value;
 	    const specificTask = document.getElementById('specific-task').value;
             const specificModel = document.getElementById('specific-model').value; // Get 	selected model
-            const modelValue = taskModels[specificModel] ? taskModels[specificTask][specificModel] : 1;
+            const energy = optionsHierarchy[useCase]?.[specificTask]?.[specificModel]._en || 0.001;
 	    const carbonIntensity = 0.481;
 
 
 	    // Retrieve additional parameters for the specific task
 	    const dynamicParamsDiv = document.getElementById('dynamic-parameters');
 	    const additionalParams = {};
-	    const energy = 0.001
 	    Array.from(dynamicParamsDiv.querySelectorAll('input')).forEach(input => {
 		if (input.type === 'number' || input.type === 'range' ) {
 		    additionalParams[input.id] = parseFloat(input.value);
-		if (input.hasOwnProperty("_en")){
-		energy = input._en}
 		}
 	    });
 
