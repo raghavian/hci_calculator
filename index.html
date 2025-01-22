@@ -216,30 +216,7 @@ const taskParameters = {
     ]
 };
 
-// Function to populate dynamic parameters based on task
-function populateDynamicParameters(task) {
-    const dynamicParamsDiv = document.getElementById('dynamic-parameters');
-    dynamicParamsDiv.innerHTML = ''; // Clear previous parameters
 
-    const parameters = taskParameters[task] || [];
-    parameters.forEach(param => {
-        const paramDiv = document.createElement('div');
-        paramDiv.classList.add('form-group');
-        const label = document.createElement('label');
-        label.htmlFor = param.id;
-        label.textContent = param.label;
-
-        const input = document.createElement('input');
-        input.id = param.id;
-        input.type = param.type;
-        input.min = param.min;
-        if (param.step) input.step = param.step;
-
-        paramDiv.appendChild(label);
-        paramDiv.appendChild(input);
-        dynamicParamsDiv.appendChild(paramDiv);
-    });
-}
 
 // Listen for changes in the specific task dropdown
 document.getElementById('specific-task').addEventListener('change', function () {
@@ -266,7 +243,30 @@ document.getElementById('use-case').addEventListener('change', function () {
             const gpuType = document.getElementById('gpu-type').value;
             const carbonIntensity = parseFloat(document.getElementById('carbon-intensity').value);
 
-            
+            // Function to populate dynamic parameters based on task
+        function populateDynamicParameters(task) {
+            const dynamicParamsDiv = document.getElementById('dynamic-parameters');
+            dynamicParamsDiv.innerHTML = ''; // Clear previous parameters
+
+            const parameters = taskParameters[task] || [];
+            parameters.forEach(param => {
+                const paramDiv = document.createElement('div');
+                paramDiv.classList.add('form-group');
+                const label = document.createElement('label');
+                label.htmlFor = param.id;
+                label.textContent = param.label;
+
+                const input = document.createElement('input');
+                input.id = param.id;
+                input.type = param.type;
+                input.min = param.min;
+                if (param.step) input.step = param.step;
+
+                paramDiv.appendChild(label);
+                paramDiv.appendChild(input);
+                dynamicParamsDiv.appendChild(paramDiv);
+            });
+        }
             // Calculate power consumption in kWh
             const powerPerGpu = gpuPower[gpuType];
             const totalPower = (powerPerGpu * numGpus * trainingTime) / 1000; // kWh
