@@ -251,10 +251,8 @@ const taskModels = {
 	    const specificTask = document.getElementById('specific-task').value;
             const specificModel = document.getElementById('specific-model').value; // Get 	selected model
             const modelValue = taskModels[specificTask] ? taskModels[specificTask][specificModel] : 1;
+	    const carbonIntensity = 0.481;
 
-	    const trainingTime = parseFloat(document.getElementById('training-time').value);
-	    const carbonIntensity = parseFloat(document.getElementById('carbon-intensity').value);
-	    const powerUsage = parseFloat(document.getElementById('power-usage').value);
 
 	    // Retrieve additional parameters for the specific task
 	    const dynamicParamsDiv = document.getElementById('dynamic-parameters');
@@ -268,19 +266,17 @@ const taskModels = {
 	    // Example: Adjust carbon footprint calculation based on additional parameters
 	    let additionalFactor = 1; // Default factor
 	    Object.values(additionalParams).forEach(value => {
-		additionalFactor += value / 100; // Example adjustment (scale as needed)
+		additionalFactor *= value; // Example adjustment (scale as needed)
 	    });
 
 	    // Calculate carbon footprint with additional parameters
-	    const carbonFootprint = trainingTime * carbonIntensity * powerUsage * additionalFactor*modelValue;
+	    const carbonFootprint = carbonIntensity * additionalFactor*modelValue;
 
 	    const job = {
 		useCase: `${useCase} #${useCaseCounter}`, // Append the counter to the use case
 		specificTask,
 		specificModel,
-		trainingTime,
 		carbonIntensity,
-		powerUsage,
 		carbonFootprint
 	    };
 
