@@ -133,13 +133,13 @@ const taskModels = {
             "research-planning": {
                 "literature-review-or-search": {
                     "Text-to-Text": [
-                        { id: "num-papers", label: "Number of articles/documents processed", type: "number", min: 1, default: 5 }
+                        { id: "num-papers", label: "Number of articles/documents processed", type: "number", min: 1, default: 5, _energy: 0.00468515625*6000 }
                     ]
                 },
                 "generation-of-materials-for-user-study": {
                     "Text-to-Text": [
-                        { id: "prompt-length", label: "Average length of prompts (in words)", type: "number", min: 1, default: 50 },
-                        { id: "num-prompts", label: "Number of prompts", type: "number", min: 1, default: 10 }
+                        { id: "prompt-length", label: "Average length of prompts (in words)", type: "number", min: 1, default: 50, _energy: 0.00468515625 },
+                        { id: "num-prompts", label: "Number of prompts", type: "number", min: 1, default: 10, _energy = 0.0013009765625}
                     ], 
                     "Text-to-Image": [
                         { id: "num-images", label: "Number of images generated", type: "number", min: 1, default: 50 },
@@ -242,7 +242,6 @@ const taskModels = {
 	    const useCase = document.getElementById('use-case').value;
 	    const specificTask = document.getElementById('specific-task').value;
             const specificModel = document.getElementById('specific-model').value; // Get 	selected model
-            const modelValue = taskModels[specificModel] : 0.004;
 	    const carbonIntensity = 0.481;
 
 
@@ -262,7 +261,7 @@ const taskModels = {
 	    });
 
 	    // Calculate carbon footprint with additional parameters
-	    const carbonFootprint = carbonIntensity * additionalFactor*modelValue;
+	    const carbonFootprint = carbonIntensity * additionalFactor;
 
 	    const job = {
 		useCase: `${useCase} #${useCaseCounter}`, // Append the counter to the use case
