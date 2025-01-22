@@ -3,190 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carbon Footprint Calculator</title>
+    <title>Model Parameter Selection</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f4f4f4;
-        }
-
-        .calculator-container {
-            width: 90%;
-            max-width: 600px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
         .form-group {
             margin-bottom: 15px;
         }
-
         label {
-            display: block;
-            margin-bottom: 5px;
             font-weight: bold;
         }
-
-        input, select {
-            width: calc(100% - 20px);
+        select, input {
+            width: 100%;
             padding: 8px;
-            margin: 5px 0 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #007BFF;
-            border: none;
-            border-radius: 4px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        #jobs-list {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: #f9f9f9;
-        }
-
-        .job-item {
-            margin-bottom: 20px;
-            padding: 10px;
-            background-color: #e9ecef;
-            border-radius: 4px;
-            font-size: 0.8em;
-        }
-
-        #result {
-            margin-top: 20px;
-            padding: 15px;
-            border: 2px solid #28a745;
-            border-radius: 4px;
-            background-color: #d4edda;
-            color: #155724;
-            font-weight: bold;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="calculator-container">
-        <h1>HCI GenAI CO2st Calculator</h1>
 
-        <div class="form-group">
-            <label for="use-case">Select Research Phase:</label>
-            <select id="use-case" required>
-                <option value="research-planning">Research & Planning</option>
-                <option value="prototyping-building">Prototyping & Building</option>
-                <option value="evaluation-user-studies">Evaluation & User Studies</option>
-                <option value="data-collection">Data Collection</option>
-                <option value="analysis-synthesis">Analysis & Synthesis</option>
-                <option value="dissemination-communication">Dissemination & Communication</option>
-                <option value="training-fine-tuning">Training & Fine-tuning</option>
-            </select>
-        </div>
+    <h2>Select Use Case, Task, and Model</h2>
 
-        <div class="form-group">
-            <label for="specific-task">Select Type of Use:</label>
-            <select id="specific-task" required>
-                <!-- Task options will be dynamically populated -->
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="specific-model">Select Type of Model:</label>
-            <select id="specific-model" required>
-                <!-- Model options will be dynamically populated -->
-            </select>
-        </div>
-        
-        <div id="dynamic-parameters"></div>
-
-        <button id="add-job">Add Use Case</button>
-        <div id="jobs-list"></div>
-
-        <button id="calculate">Calculate Total Carbon Footprint</button>
-        <div id="result"></div>
+    <!-- Use Case Selection -->
+    <div class="form-group">
+        <label for="use-case">Select Use Case:</label>
+        <select id="use-case">
+            <option value="research-planning">Research & Planning</option>
+            <option value="training-fine-tuning">Training & Fine-tuning</option>
+        </select>
     </div>
-    
-    <script>
-        const jobs = [];
 
+    <!-- Task Selection -->
+    <div class="form-group">
+        <label for="specific-task">Select Task:</label>
+        <select id="specific-task">
+            <!-- Tasks will be populated dynamically -->
+        </select>
+    </div>
+
+    <!-- Model Selection -->
+    <div class="form-group">
+        <label for="specific-model">Select Model:</label>
+        <select id="specific-model">
+            <!-- Models will be populated dynamically -->
+        </select>
+    </div>
+
+    <!-- Dynamic Parameters -->
+    <div id="dynamic-parameters">
+        <!-- Task or Model specific parameters will appear here -->
+    </div>
+
+    <script>
+        // Task-specific parameters
         const taskParameters = {
             "literature-review-or-search": [
                 { id: "num-papers", label: "Number of Papers Reviewed", type: "number", min: 0, default: 1 }
             ],
             "generation-of-materials-for-user-study": [
-                { id: "avg-len", label: "Average length of prompts (in words)", type: "number", min: 0, default: 100},
-                { id: "num-prompt", label: "Number of prompts", type: "number", min: 0, default: 1},
+                { id: "avg-len", label: "Average length of prompts (in words)", type: "number", min: 0, default: 100 },
+                { id: "num-prompt", label: "Number of prompts", type: "number", min: 0, default: 1 }
             ],
             "language-model-fine-tuning": [
                 { id: "num-epochs", label: "Number of Epochs", type: "number", min: 1 },
                 { id: "dataset-size", label: "Dataset Size (GB)", type: "number", min: 0.1, step: 0.1 }
-            ],
-            "custom-dataset-training": [
-                { id: "num-layers", label: "Number of Layers in the Model", type: "number", min: 1 },
-                { id: "training-batch-size", label: "Training Batch Size", type: "number", min: 1 }
             ]
         };
 
+        // Task-specific models
         const taskModels = {
             "literature-review-or-search": {
-                "Text-to-Text": 0.00468515625,
-                "ResNet": 1
+                "Text-to-Text": 0.00468515625
             },
             "generation-of-materials-for-user-study": {
                 "Text-to-Text": 0.00468515625,
                 "Text-to-Image": 0.0013009765625
             },
             "language-model-fine-tuning": {
-                "GPT-3": 2,  
-                "BERT": 0.2,  
-                "T5": 1       
-            },
-            "custom-dataset-training": {
-                "ResNet": 1.5,
-                "VGG": 1,
-                "Inception": 0.8
+                "GPT-3": 2,  // Assign numerical value 2 to GPT-3
+                "BERT": 0.2,  // Assign numerical value 0.2 to BERT
+                "T5": 1       // Assign numerical value 1 to T5
             }
         };
 
+        // Model-specific parameters
         const modelSpecificParameters = {
-            "ResNet": {
-                "research-planning": [
-                    { id: "learning-rate", label: "Learning Rate", type: "number", min: 0.0001, max: 0.1, step: 0.0001, default: 0.01 },
-                    { id: "batch-size", label: "Batch Size", type: "number", min: 1, max: 100, step: 1, default: 32 }
-                ],
-                "training-fine-tuning": [
-                    { id: "dropout-rate", label: "Dropout Rate", type: "number", min: 0.0, max: 1.0, step: 0.01, default: 0.5 }
+            "GPT-3": {
+                "num-parameters": [
+                    { id: "num-epochs", label: "Number of Epochs", type: "number", min: 1, default: 5 }
                 ]
             },
-            "VGG": {
-                "research-planning": [
-                    { id: "learning-rate", label: "Learning Rate", type: "number", min: 0.0001, max: 0.1, step: 0.0001, default: 0.005 }
+            "BERT": {
+                "num-parameters": [
+                    { id: "batch-size", label: "Batch Size", type: "number", min: 1, default: 32 }
                 ]
             }
         };
 
-        function populateSpecificTasks(useCase) {
-            const specificTaskSelect = document.getElementById('specific-task');
-            specificTaskSelect.innerHTML = '';
+        // Populate tasks based on selected use case
+        function populateTasks(useCase) {
+            const taskSelect = document.getElementById('specific-task');
+            taskSelect.innerHTML = '';  // Clear old options
 
             let tasks = [];
             switch (useCase) {
@@ -194,23 +109,23 @@
                     tasks = ["literature-review-or-search", "generation-of-materials-for-user-study"];
                     break;
                 case "training-fine-tuning":
-                    tasks = ["language-model-fine-tuning", "custom-dataset-training"];
+                    tasks = ["language-model-fine-tuning"];
                     break;
+                // Add more use case conditions as needed
             }
 
             tasks.forEach(task => {
                 const option = document.createElement('option');
                 option.value = task;
                 option.textContent = task.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-                specificTaskSelect.appendChild(option);
+                taskSelect.appendChild(option);
             });
-
-            specificTaskSelect.dispatchEvent(new Event('change'));
         }
 
-        function populateSpecificModels(task) {
-            const specificModelSelect = document.getElementById('specific-model');
-            specificModelSelect.innerHTML = '';
+        // Populate models based on selected task
+        function populateModels(task) {
+            const modelSelect = document.getElementById('specific-model');
+            modelSelect.innerHTML = '';  // Clear old options
 
             let models = [];
             if (taskModels[task]) {
@@ -221,120 +136,67 @@
                 const option = document.createElement('option');
                 option.value = model;
                 option.textContent = model;
-                specificModelSelect.appendChild(option);
+                modelSelect.appendChild(option);
             });
-
-            specificModelSelect.dispatchEvent(new Event('change'));
         }
 
-        function populateDynamicParameters(useCase, model) {
+        // Populate model-specific parameters based on selected model
+        function populateModelSpecificParameters(model) {
             const dynamicParamsDiv = document.getElementById('dynamic-parameters');
-            dynamicParamsDiv.innerHTML = '';
+            dynamicParamsDiv.innerHTML = '';  // Clear old parameters
 
-            const modelParams = modelSpecificParameters[model] ? modelSpecificParameters[model][useCase] : [];
-            modelParams.forEach(param => {
-                const paramDiv = document.createElement('div');
-                paramDiv.classList.add('form-group');
+            if (modelSpecificParameters[model]) {
+                modelSpecificParameters[model]["num-parameters"].forEach(param => {
+                    const paramDiv = document.createElement('div');
+                    paramDiv.classList.add('form-group');
 
-                const label = document.createElement('label');
-                label.htmlFor = param.id;
-                label.textContent = param.label;
+                    const label = document.createElement('label');
+                    label.htmlFor = param.id;
+                    label.textContent = param.label;
 
-                const input = document.createElement('input');
-                input.id = param.id;
-                input.type = param.type;
-                input.min = param.min;
-                if (param.step) input.step = param.step;
-                input.value = param.default || param.min;
+                    const input = document.createElement('input');
+                    input.id = param.id;
+                    input.type = param.type;
+                    input.min = param.min;
+                    input.value = param.default;
 
-                paramDiv.appendChild(label);
-                paramDiv.appendChild(input);
-
-                dynamicParamsDiv.appendChild(paramDiv);
-            });
+                    paramDiv.appendChild(label);
+                    paramDiv.appendChild(input);
+                    dynamicParamsDiv.appendChild(paramDiv);
+                });
+            }
         }
 
+        // Event listener for use case change
         document.getElementById('use-case').addEventListener('change', function () {
-            const useCase = this.value;
-            populateSpecificTasks(useCase);
+            const selectedUseCase = this.value;
+            populateTasks(selectedUseCase);
+            populateModels(document.getElementById('specific-task').value);  // Populate models for the default task
+            populateModelSpecificParameters(document.getElementById('specific-model').value);  // Populate model-specific parameters
         });
 
+        // Event listener for task change
         document.getElementById('specific-task').addEventListener('change', function () {
             const selectedTask = this.value;
-            const selectedUseCase = document.getElementById('use-case').value;
-
-            populateDynamicParameters(selectedUseCase, selectedTask);
-            populateSpecificModels(selectedTask);
+            populateModels(selectedTask);
+            populateModelSpecificParameters(document.getElementById('specific-model').value);  // Populate model-specific parameters for selected task
         });
 
+        // Event listener for model change
         document.getElementById('specific-model').addEventListener('change', function () {
             const selectedModel = this.value;
-            const selectedUseCase = document.getElementById('use-case').value;
-            
-            populateDynamicParameters(selectedUseCase, selectedModel);
+            populateModelSpecificParameters(selectedModel);  // Populate model-specific parameters for selected model
         });
 
-        document.getElementById('add-job').addEventListener('click', function () {
-            const useCase = document.getElementById('use-case').value;
-            const specificTask = document.getElementById('specific-task').value;
-            const specificModel = document.getElementById('specific-model').value;
-            const modelValue = taskModels[specificTask] ? taskModels[specificTask][specificModel] : 1;
-
-            const carbonIntensity = 0.481;
-            const powerUsage = 1.58;
-
-            const dynamicParamsDiv = document.getElementById('dynamic-parameters');
-            const additionalParams = {};
-            Array.from(dynamicParamsDiv.querySelectorAll('input')).forEach(input => {
-                if (input.type === 'number' || input.type === 'range') {
-                    additionalParams[input.id] = parseFloat(input.value);
-                }
-            });
-
-            let additionalFactor = 1;
-            Object.values(additionalParams).forEach(value => {
-                additionalFactor += value / 100;
-            });
-
-            const carbonFootprint = carbonIntensity * powerUsage * additionalFactor * modelValue;
-
-            const job = {
-                useCase: `${useCase} #${jobs.length + 1}`,
-                specificTask,
-                specificModel,
-                carbonIntensity,
-                powerUsage,
-                carbonFootprint
-            };
-
-            jobs.push(job);
-
-            const jobsList = document.getElementById('jobs-list');
-            const jobItem = document.createElement('div');
-            jobItem.classList.add('job-item');
-            jobItem.innerHTML = `
-                Use Case: ${useCase}, Task: ${job.specificTask.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())},
-                Model: ${job.specificModel}, Carbon Footprint: ${carbonFootprint.toFixed(5)} kgCO2e
-            `;
-            jobsList.appendChild(jobItem);
+        // Initialize the dropdowns on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            const initialUseCase = document.getElementById('use-case').value;
+            populateTasks(initialUseCase);
+            populateModels(document.getElementById('specific-task').value);  // Populate models for the default task
+            populateModelSpecificParameters(document.getElementById('specific-model').value);  // Populate model-specific parameters
         });
-
-        document.getElementById('calculate').addEventListener('click', function () {
-            let totalFootprint = 0;
-
-            jobs.forEach(job => {
-                totalFootprint += job.carbonFootprint;
-            });
-
-            const resultDiv = document.getElementById('result');
-            resultDiv.textContent = `Total Carbon Footprint: ${totalFootprint.toFixed(5)} kgCO2e`;
-        });
-
-        // Populate dropdowns on page load
-        window.onload = function() {
-            const useCase = document.getElementById('use-case').value;
-            populateSpecificTasks(useCase);
-        };
     </script>
+
 </body>
 </html>
+
