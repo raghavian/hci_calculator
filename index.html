@@ -289,11 +289,8 @@ function populateDynamicParameters(task) {
 	    const jobItem = document.createElement('div');
 	    jobItem.classList.add('job-item');
     	jobItem.innerHTML = `
-	<p><strong>Use Case:</strong> ${useCaseCounter}</p>
-	<p><strong>Phase:</strong> ${job}</p>
-	<p><strong>Task:</strong> ${job.specificTask}</p>
-	<p><strong>Carbon Footprint:</strong> ${carbonFootprint.toFixed(2)} kgCO2e</p>
-    `;
+	Use Case: ${useCaseCounter}, Phase: ${useCase}, Task: ${job.specificTask},
+	Carbon Footprint: ${carbonFootprint.toFixed(2)} kgCO2e    `;
 	    jobsList.appendChild(jobItem);
 
 	    // Increment the counter
