@@ -179,6 +179,10 @@
             "VGG": {
                 "research-planning": [
                     { id: "learning-rate", label: "Learning Rate", type: "number", min: 0.0001, max: 0.1, step: 0.0001, default: 0.005 }
+                ],
+                "training-fine-tuning": [
+                    { id: "learning-rate", label: "Learning Rate", type: "number", min: 0.0001, max: 0.1, step: 0.0001, default: 0.005 },
+                    { id: "batch-size", label: "Batch Size", type: "number", min: 1, max: 100, step: 1, default: 32 }
                 ]
             }
         };
