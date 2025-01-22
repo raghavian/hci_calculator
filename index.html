@@ -44,6 +44,18 @@
             border-radius: 4px;
             background-color: #f9f9f9;
         }
+
+        #jobs-list {
+            margin-top: 20px;
+        }
+
+        .job-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 <body>
@@ -91,11 +103,15 @@
         <input type="number" id="power-usage" min="1" step="0.01" value="1.58" required>
     </div>
 
-    <button id="calculate">Calculate Carbon Footprint</button>
+    <button id="add-job">Add Job</button>
+    <button id="calculate">Calculate Total Carbon Footprint</button>
 
+    <div id="jobs-list"></div>
     <div id="result"></div>
 
     <script>
+        const jobs = [];
+
         const taskParameters = {
             "literature-review": [
                 { id: "num-papers", label: "Number of Papers Reviewed", type: "number", min: 1 },
@@ -173,14 +189,38 @@
             specificTaskSelect.dispatchEvent(new Event('change'));
         });
 
-        document.getElementById('calculate').addEventListener('click', function () {
+        document.getElementById('add-job').addEventListener('click', function () {
+            const useCase = document.getElementById('use-case').value;
+            const specificTask = document.getElementById('specific-task').value;
             const trainingTime = parseFloat(document.getElementById('training-time').value);
             const carbonIntensity = parseFloat(document.getElementById('carbon-intensity').value);
             const powerUsage = parseFloat(document.getElementById('power-usage').value);
 
-            const carbonFootprint = trainingTime * carbonIntensity * powerUsage;
+            const job = {
+                useCase,
+                specificTask,
+                trainingTime,
+                carbonIntensity,
+                powerUsage
+            };
 
-            document.getElementById('result').textContent = `Estimated Carbon Footprint: ${carbonFootprint.toFixed(2)} kgCO2e`;
+            jobs.push(job);
+
+            const jobItem = document.createElement('div');
+            jobItem.className = 'job-item';
+            jobItem.textContent = `Use Case: ${useCase}, Task: ${specificTask}, Training Time: ${trainingTime} hours`;
+            document.getElementById('jobs-list').appendChild(jobItem);
+        });
+
+        document.getElementById('calculate').addEventListener('click', function () {
+            let totalCarbonFootprint = 0;
+
+            jobs.forEach(job => {
+                const jobFootprint = job.trainingTime * job.carbonIntensity * job.powerUsage;
+                totalCarbonFootprint += jobFootprint;
+            });
+
+            document.getElementById('result').textContent = `Total Estimated Carbon Footprint: ${totalCarbonFootprint.toFixed(2)} kgCO2e`;
         });
 
         document.getElementById('use-case').dispatchEvent(new Event('change'));
