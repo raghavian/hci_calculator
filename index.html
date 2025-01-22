@@ -273,6 +273,7 @@ function populateDynamicParameters(task) {
 	    const carbonIntensity = parseFloat(document.getElementById('carbon-intensity').value);
 	    const powerUsage = parseFloat(document.getElementById('power-usage').value);
 
+	    const carbonFootprint = trainingTime * carbonIntensity * powerUsage;
 	    const job = {
 		useCase: `${useCase} #${useCaseCounter}`, // Append the counter to the use case
 		specificTask,
@@ -287,7 +288,12 @@ function populateDynamicParameters(task) {
 	    const jobsList = document.getElementById('jobs-list');
 	    const jobItem = document.createElement('div');
 	    jobItem.classList.add('job-item');
-	    jobItem.textContent = `Use Case: ${job.useCase}, Task: ${specificTask}, Training Time: ${trainingTime} hours, Carbon Intensity: ${carbonIntensity} kgCO2e/kWh, PUE: ${powerUsage}`;
+    	jobItem.innerHTML = `
+	<p><strong>Use Case:</strong> ${useCaseCounter}</p>
+	<p><strong>Phase:</strong> ${job}</p>
+	<p><strong>Task:</strong> ${job.specificTask}</p>
+	<p><strong>Carbon Footprint:</strong> ${carbonFootprint.toFixed(2)} kgCO2e</p>
+    `;
 	    jobsList.appendChild(jobItem);
 
 	    // Increment the counter
