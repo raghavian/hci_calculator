@@ -137,6 +137,9 @@
             	{ id: "avg-len", label: "Average length of prompts (in words)", type: "number", min: 0, default: 100},
         	{ id: "num-prompt", label: "Number of prompts", type: "number", min: 0, default: 1},
             ],
+            "customized-chatbot": [
+                { id: "num-papers", label: "Number of Papers Reviewed", type: "number", min: 0, default:1 }
+            ]
             "language-model-fine-tuning": [
                 { id: "num-epochs", label: "Number of Epochs", type: "number", min: 1 },
                 { id: "dataset-size", label: "Dataset Size (GB)", type: "number", min: 0.1, step: 0.1 }
@@ -254,117 +257,188 @@ function populateSpecificModels(task) {
 //            document.getElementById('training-time-display').textContent = this.value;
 //        });
 
-	
-
 	document.getElementById('use-case').addEventListener('change', function () {
-	    populateSpecificTasks(this.value);
-	});
-	
-	document.getElementById('specific-task').addEventListener('change', function () {
-	    const selectedTask = this.value;
-	    populateDynamicParameters(selectedTask);
-	    populateSpecificModels(selectedTask); // Populate the model dropdown when task changes
-	});
+    populateSpecificTasks(this.value);
+});
 
-	function populateSpecificTasks(useCase) {
-	    const specificTaskSelect = document.getElementById('specific-task');
-	    specificTaskSelect.innerHTML = ''; // Clear old options
+document.getElementById('specific-task').addEventListener('change', function () {
+    const selectedTask = this.value;
+    populateDynamicParameters(selectedTask);
+    populateSpecificModels(selectedTask); // Populate the model dropdown when task changes
+});
 
-	    let tasks = [];
-	    switch (useCase) {
-		case "research-planning":
-		    tasks = ["literature-review-or-search", "generation-of-materials-for-user-study"];
-		    break;
-		case "training-fine-tuning":
-		    tasks = ["language-model-fine-tuning", "custom-dataset-training"];
-		    break;
-		// Add more cases for other use cases
-	    }
+function populateSpecificTasks(useCase) {
+    const specificTaskSelect = document.getElementById('specific-task');
+    specificTaskSelect.innerHTML = ''; // Clear old options
 
-	    tasks.forEach(task => {
-		const option = document.createElement('option');
-		option.value = task;
-		option.textContent = task.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-		specificTaskSelect.appendChild(option);
-	    });
+    let tasks = [];
+    switch (useCase) {
+        case "research-planning":
+            tasks = ["literature-review-or-search", "generation-of-materials-for-user-study"];
+            break;
+        case "training-fine-tuning":
+            tasks = ["language-model-fine-tuning", "custom-dataset-training"];
+            break;
+        // Add more cases for other use cases as needed
+    }
 
-	    specificTaskSelect.dispatchEvent(new Event('change')); // Trigger task parameter population
-	}
+    tasks.forEach(task => {
+        const option = document.createElement('option');
+        option.value = task;
+        option.textContent = task.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        specificTaskSelect.appendChild(option);
+    });
 
-	// Initialize the dropdown on page load
-	document.addEventListener('DOMContentLoaded', function () {
-	    const initialUseCase = document.getElementById('use-case').value;
-	    populateSpecificTasks(initialUseCase);
-	});
+    // Trigger task parameter population when the task is selected
+    specificTaskSelect.dispatchEvent(new Event('change'));
+}
 
+// Dynamically populate the models based on the task
+function populateSpecificModels(task) {
+    const specificModelSelect = document.getElementById('specific-model');
+    specificModelSelect.innerHTML = ''; // Clear old options
 
-	let useCaseCounter = 1; // Initialize counter for Use Case
+    let models = [];
+    if (taskModels[task]) {
+        models = Object.keys(taskModels[task]);  // Get model names as options
+    }
 
-	document.getElementById('add-job').addEventListener('click', function () {
-	    const useCase = document.getElementById('use-case').value;
-	    const specificTask = document.getElementById('specific-task').value;
-            const specificModel = document.getElementById('specific-model').value; // Get 	selected model
-            const modelValue = taskModels[specificTask] ? taskModels[specificTask][specificModel] : 1;
+    models.forEach(model => {
+        const option = document.createElement('option');
+        option.value = model;
+        option.textContent = model;
+        specificModelSelect.appendChild(option);
+    });
 
+    // Trigger any changes on model selection
+    specificModelSelect.dispatchEvent(new Event('change'));
+}
 
-	    const carbonIntensity = 0.481 
-	    // parseFloat(document.getElementById('carbon-intensity').value);
-	    const powerUsage = 1.58
-	    //parseFloat(document.getElementById('power-usage').value);
+// Dynamically populate the parameters based on the task
+function populateDynamicParameters(task) {
+    const dynamicParamsDiv = document.getElementById('dynamic-parameters');
+    dynamicParamsDiv.innerHTML = ''; // Clear previous parameters
 
-	    // Retrieve additional parameters for the specific task
-	    const dynamicParamsDiv = document.getElementById('dynamic-parameters');
-	    const additionalParams = {};
-	    Array.from(dynamicParamsDiv.querySelectorAll('input')).forEach(input => {
-		if (input.type === 'number' || input.type === 'range') {
-		    additionalParams[input.id] = parseFloat(input.value);
-		}
-	    });
+    const parameters = taskParameters[task] || [];
+    parameters.forEach(param => {
+        const paramDiv = document.createElement('div');
+        paramDiv.classList.add('form-group');
 
-	    // Example: Adjust carbon footprint calculation based on additional parameters
-	    let additionalFactor = 1; // Default factor
-	    Object.values(additionalParams).forEach(value => {
-		additionalFactor += value / 100; // Example adjustment (scale as needed)
-	    });
+        const label = document.createElement('label');
+        label.htmlFor = param.id;
+        label.textContent = param.label;
 
-	    // Calculate carbon footprint with additional parameters
-	    const carbonFootprint = carbonIntensity * powerUsage * additionalFactor*modelValue;
+        if (param.type === 'range') {
+            // Create a slider
+            const sliderContainer = document.createElement('div');
+            sliderContainer.style.display = 'flex';
+            sliderContainer.style.alignItems = 'center';
+            sliderContainer.style.gap = '10px';
 
-	    const job = {
-		useCase: `${useCase} #${useCaseCounter}`, // Append the counter to the use case
-		specificTask,
-		specificModel,
-		carbonIntensity,
-		powerUsage,
-		carbonFootprint
-	    };
+            const minLabel = document.createElement('span');
+            minLabel.textContent = param.min;
 
-	    jobs.push(job);
+            const slider = document.createElement('input');
+            slider.id = param.id;
+            slider.type = 'range';
+            slider.min = param.min;
+            slider.max = param.max;
+            slider.step = param.step;
+            slider.value = param.default || param.min;
 
-	    // Display the added job in the job list
-	    const jobsList = document.getElementById('jobs-list');
-	    const jobItem = document.createElement('div');
-	    jobItem.classList.add('job-item');
-    	jobItem.innerHTML = `
-	Use Case: ${useCaseCounter}, Phase: ${useCase.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}, Task: ${job.specificTask.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())},
-	Carbon Footprint: ${carbonFootprint.toFixed(5)} kgCO2e    `;
-	    jobsList.appendChild(jobItem);
+            const valueDisplay = document.createElement('span');
+            valueDisplay.id = `${param.id}-display`;
+            valueDisplay.textContent = slider.value;
 
-	    // Increment the counter
-	    useCaseCounter++;
-	});
-
-
-        document.getElementById('calculate').addEventListener('click', function () {
-            let totalFootprint = 0;
-
-            jobs.forEach(job => {
-                totalFootprint += job.carbonFootprint;
+            slider.addEventListener('input', () => {
+                valueDisplay.textContent = slider.value;
             });
 
-            const resultDiv = document.getElementById('result');
-            resultDiv.textContent = `Total Carbon Footprint: ${totalFootprint.toFixed(2)} kgCO2e`;
-        });
+            sliderContainer.appendChild(minLabel);
+            sliderContainer.appendChild(slider);
+            sliderContainer.appendChild(valueDisplay);
+
+            paramDiv.appendChild(label);
+            paramDiv.appendChild(sliderContainer);
+        } else {
+            // Default input field for non-slider parameters
+            const input = document.createElement('input');
+            input.id = param.id;
+            input.type = param.type;
+            input.min = param.min;
+            if (param.step) input.step = param.step;
+
+            paramDiv.appendChild(label);
+            paramDiv.appendChild(input);
+        }
+
+        dynamicParamsDiv.appendChild(paramDiv);
+    });
+}
+
+document.getElementById('add-job').addEventListener('click', function () {
+    const useCase = document.getElementById('use-case').value;
+    const specificTask = document.getElementById('specific-task').value;
+    const specificModel = document.getElementById('specific-model').value;
+    const modelValue = taskModels[specificTask] ? taskModels[specificTask][specificModel] : 1;
+
+    const carbonIntensity = 0.481;  // Example value (replace with actual dynamic value)
+    const powerUsage = 1.58;       // Example value (replace with actual dynamic value)
+
+    // Retrieve additional parameters for the selected task
+    const dynamicParamsDiv = document.getElementById('dynamic-parameters');
+    const additionalParams = {};
+    Array.from(dynamicParamsDiv.querySelectorAll('input')).forEach(input => {
+        if (input.type === 'number' || input.type === 'range') {
+            additionalParams[input.id] = parseFloat(input.value);
+        }
+    });
+
+    // Adjust the carbon footprint based on additional parameters
+    let additionalFactor = 1; // Default factor
+    Object.values(additionalParams).forEach(value => {
+        additionalFactor += value / 100; // Example adjustment (scale as needed)
+    });
+
+    // Calculate carbon footprint with the model value
+    const carbonFootprint = carbonIntensity * powerUsage * additionalFactor * modelValue;
+
+    const job = {
+        useCase: `${useCase} #${useCaseCounter}`, // Append the counter to the use case
+        specificTask,
+        specificModel,
+        carbonIntensity,
+        powerUsage,
+        carbonFootprint
+    };
+
+    jobs.push(job);
+
+    // Display the added job in the job list
+    const jobsList = document.getElementById('jobs-list');
+    const jobItem = document.createElement('div');
+    jobItem.classList.add('job-item');
+    jobItem.innerHTML = `
+        Use Case: ${useCaseCounter}, Phase: ${useCase.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}, 
+        Task: ${job.specificTask.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())},
+        Carbon Footprint: ${carbonFootprint.toFixed(5)} kgCO2e
+    `;
+    jobsList.appendChild(jobItem);
+
+    // Increment the counter
+    useCaseCounter++;
+});
+
+document.getElementById('calculate').addEventListener('click', function () {
+    let totalFootprint = 0;
+
+    jobs.forEach(job => {
+        totalFootprint += job.carbonFootprint;
+    });
+
+    const resultDiv = document.getElementById('result');
+    resultDiv.textContent = `Total Carbon Footprint: ${totalFootprint.toFixed(5)} kgCO2e`;
+});
     </script>
 </body>
 </html>
