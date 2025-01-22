@@ -287,8 +287,8 @@ const taskModels = {
 	    const jobItem = document.createElement('div');
 	    jobItem.classList.add('job-item');
     	jobItem.innerHTML = `
-	Use Case: ${useCaseCounter}, Phase: ${useCase}.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()), Task: ${job.specificTask},
-	Carbon Footprint: ${carbonFootprint.toFixed(2)} kgCO2e    `;
+	Use Case: ${useCaseCounter}, Phase: ${useCase.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}, Task: ${job.specificTask.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())},
+	Carbon Footprint: ${carbonFootprint.toFixed(5)} kgCO2e    `;
 	    jobsList.appendChild(jobItem);
 
 	    // Increment the counter
@@ -306,7 +306,7 @@ const taskModels = {
             });
 
             const resultDiv = document.getElementById('result');
-            resultDiv.textContent = `Total Carbon Footprint: ${totalFootprint.toFixed(2)} kgCO2e`;
+            resultDiv.textContent = `Total Carbon Footprint: ${totalFootprint.toFixed(5)} kgCO2e`;
         });
     </script>
 </body>
