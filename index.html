@@ -288,7 +288,7 @@ const taskModels = {
 	    const jobItem = document.createElement('div');
 	    jobItem.classList.add('job-item');
     	jobItem.innerHTML = `
-	Carbon Footprint for ${useCaseCounter} -> ${useCase.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())} -> ${job.specificTask.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}:
+	${useCaseCounter}. Carbon Footprint for ${useCase.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}; ${job.specificTask.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}; ${job.specificModel.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}:
 ${carbonFootprint.toFixed(5)} kgCO2e`;
 	    jobsList.appendChild(jobItem);
 
