@@ -336,6 +336,12 @@
             const resultDiv = document.getElementById('result');
             resultDiv.textContent = `Total Carbon Footprint: ${totalFootprint.toFixed(5)} kgCO2e`;
         });
+
+        // Populate dropdowns on page load
+        window.onload = function() {
+            const useCase = document.getElementById('use-case').value;
+            populateSpecificTasks(useCase);
+        };
     </script>
 </body>
 </html>
