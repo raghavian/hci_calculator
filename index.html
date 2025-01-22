@@ -296,7 +296,8 @@ function populateDynamicParameters(task) {
 		specificTask,
 		trainingTime,
 		carbonIntensity,
-		powerUsage
+		powerUsage,
+		carbonFootprint
 	    };
 
 	    jobs.push(job);
@@ -320,8 +321,8 @@ function populateDynamicParameters(task) {
 
             jobs.forEach(job => {
                 const energyUsage = job.trainingTime * job.powerUsage;
-                const carbonFootprint = energyUsage * job.carbonIntensity;
-                totalFootprint += carbonFootprint;
+//                const carbonFootprint = energyUsage * job.carbonIntensity;
+                totalFootprint += job.carbonFootprint;
             });
 
             const resultDiv = document.getElementById('result');
