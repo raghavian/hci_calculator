@@ -120,6 +120,21 @@
     </div>
     
     <script>
+    
+    // Define specific models for each task
+const taskModels = {
+    "language-model-fine-tuning": {
+        "GPT-3": 2,  // Assign numerical value 2 to GPT-3
+        "BERT": 0.2,  // Assign numerical value 0.2 to BERT
+        "T5": 1       // Assign numerical value 1 to T5
+    },
+    "custom-dataset-training": {
+        "ResNet": 1.5,
+        "VGG": 1,
+        "Inception": 0.8
+    }
+};
+
         const jobs = [];
         const optionsHierarchy = {
             "research-planning": {
@@ -228,6 +243,75 @@
             const phase = document.getElementById('use-case').value;
             populateTasks(phase);
         };
+        
+        let useCaseCounter = 1; // Initialize counter for Use Case
+
+	document.getElementById('add-job').addEventListener('click', function () {
+	    const useCase = document.getElementById('use-case').value;
+	    const specificTask = document.getElementById('specific-task').value;
+            const specificModel = document.getElementById('specific-model').value; // Get 	selected model
+            const modelValue = taskModels[specificTask] ? taskModels[specificTask][specificModel] : 1;
+
+	    const trainingTime = parseFloat(document.getElementById('training-time').value);
+	    const carbonIntensity = parseFloat(document.getElementById('carbon-intensity').value);
+	    const powerUsage = parseFloat(document.getElementById('power-usage').value);
+
+	    // Retrieve additional parameters for the specific task
+	    const dynamicParamsDiv = document.getElementById('dynamic-parameters');
+	    const additionalParams = {};
+	    Array.from(dynamicParamsDiv.querySelectorAll('input')).forEach(input => {
+		if (input.type === 'number' || input.type === 'range') {
+		    additionalParams[input.id] = parseFloat(input.value);
+		}
+	    });
+
+	    // Example: Adjust carbon footprint calculation based on additional parameters
+	    let additionalFactor = 1; // Default factor
+	    Object.values(additionalParams).forEach(value => {
+		additionalFactor += value / 100; // Example adjustment (scale as needed)
+	    });
+
+	    // Calculate carbon footprint with additional parameters
+	    const carbonFootprint = trainingTime * carbonIntensity * powerUsage * additionalFactor*modelValue;
+
+	    const job = {
+		useCase: `${useCase} #${useCaseCounter}`, // Append the counter to the use case
+		specificTask,
+		specificModel,
+		trainingTime,
+		carbonIntensity,
+		powerUsage,
+		carbonFootprint
+	    };
+
+	    jobs.push(job);
+
+	    // Display the added job in the job list
+	    const jobsList = document.getElementById('jobs-list');
+	    const jobItem = document.createElement('div');
+	    jobItem.classList.add('job-item');
+    	jobItem.innerHTML = `
+	Use Case: ${useCaseCounter}, Phase: ${useCase}.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()), Task: ${job.specificTask},
+	Carbon Footprint: ${carbonFootprint.toFixed(2)} kgCO2e    `;
+	    jobsList.appendChild(jobItem);
+
+	    // Increment the counter
+	    useCaseCounter++;
+	});
+
+
+        document.getElementById('calculate').addEventListener('click', function () {
+            let totalFootprint = 0;
+
+            jobs.forEach(job => {
+                const energyUsage = job.trainingTime * job.powerUsage;
+//                const carbonFootprint = energyUsage * job.carbonIntensity;
+                totalFootprint += job.carbonFootprint;
+            });
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = `Total Carbon Footprint: ${totalFootprint.toFixed(2)} kgCO2e`;
+        });
     </script>
 </body>
 </html>
