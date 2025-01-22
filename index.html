@@ -261,10 +261,17 @@ const taskModels = {
 		if (input.type === 'number' || input.type === 'range' ) {
 		    additionalParams[input.id] = parseFloat(input.value);
 		}
-		if (input._en){
-		   additionalParams[input.id] = parseFloat(input._en);
-		}
 	    });
+	    
+	    // Get the list of parameters (including _en) for the task and model
+		const taskModelParams = optionsHierarchy[useCase][SpecificTask][specificModel];
+
+		// Add _en values to additionalParams
+		taskModelParams.forEach(param => {
+		    if (param._en) {
+			additionalParams[param.id] = param._en; // Include the _en value
+		    }
+		});
 
 	    // Example: Adjust carbon footprint calculation based on additional parameters
 	    let additionalFactor = 1; // Default factor
