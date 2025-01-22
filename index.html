@@ -270,7 +270,7 @@ const taskModels = {
 	    });
 
 	    // Calculate carbon footprint with additional parameters
-	    const carbonFootprint = carbonIntensity * additionalFactor * energy;
+	    const carbonFootprint = carbonIntensity * additionalFactor * energy /1000;
 
 	    const job = {
 		useCase: `${useCase} #${useCaseCounter}`, // Append the counter to the use case
