@@ -169,18 +169,34 @@
             	"prototype-using-gen-ai-functionality":{},
             	"video-prototyping":{},
             	"generating-graphics-for-prototype":{},
-            	},
-            "evaluation-user-studies": {},
-            "data-collection-generation": {},
-            "analysis-synthesis": {},
-            "dissemination": {},
+            },
+            "evaluation-user-studies": {
+            	"user-evaluation-of-prototype":{},
+            	"controlled-user-study":{},
+            	"open-ended-user-study":{},
+            	"workshop-or-focus-group":{},
+            },
+            "data-collection-generation": {
+            	"automatic-transcription":{},
+            	"automatic-translation":{},
+            	"dataset-generation":{},
+            	"generation-of-model-output-for-exploration-or-evaluation":{}
+            },
+            "analysis-synthesis": {
+            	"qualitative-text-analysis":{},
+            	"automatic-text-summarization":{},
+            	"image-analysis":{}
+            },
+            "dissemination": {
+            	"manuscript-generation-(text)":{},
+            	"graphics-generation":{},
+            	"proofreading":{},
+            	"slides-generation":{},
+            	"audio-presentation-generation":{}
+            },
             "training-fine-tuning": {
-                "custom-dataset": {
-                    "BERT": [
-                        { id: "num-epochs", label: "Number of Epochs", type: "number", min: 1, default: 20 },
-                        { id: "batch-size", label: "Batch Size", type: "number", min: 1, default: 32 }
-                    ]
-                }
+            	"model-training":{},
+            	"model-fine-tuning":{}
             }
         };
 
