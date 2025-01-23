@@ -129,7 +129,20 @@
     </div>
     
     <script>
-	const t2t = 0.00468515625
+	const t2t = 0.00468515;
+	const t2i = 0.00130097;
+	const a2t = 0.00633499;
+	const t2v = 0.02174218;
+	const t3d = 0.2632;
+	const t2a = 0.01141833;
+	const i2t = 0.00342265;
+	const i2i = 0.00088496;
+	const i3d = 0.00130097;
+	const v2t = 0.00103984;
+	const v2v = 0.02601953;
+	const a2a = 0.006335;
+	const i2v = 0.02601953;
+	
         const jobs = [];
         const optionsHierarchy = {
             "research-planning": {
@@ -144,7 +157,7 @@
                         { id: "num-prompts", label: "Number of prompts", type: "number", min: 1, default: 10 }
                     ], 
                     "Text-to-Image": [
-                        { id: "num-images", label: "Number of images generated", type: "number", min: 1, default: 50, _en: 0.0013009},
+                        { id: "num-images", label: "Number of images generated", type: "number", min: 1, default: 50, _en: t2i},
                         { id: "img-res", label: "Resolution of images", type: "number", min: 1, default: 512 }
                     ]
                 }
