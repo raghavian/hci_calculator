@@ -160,7 +160,7 @@
                     ], 
                     "Text-to-Image": [
                         { id: "num-images", label: "Number of images generated", type: "number", min: 1, default: 50, _en: t2i},
-                        { id: "img-res", label: "Resolution of images", type: "number", min: 1, default: 512, step: 32, max: 4096}
+                        { id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096}
                     ]
                 }
             },
@@ -179,15 +179,53 @@
             			{id: "num-calls", label: "Number of calls to the system per interaction", type: "number", min: 1, default: 10 },            			
             			{id: "num-tests", label: "How many times was this feature tested?", type: "number", min: 1, default: 50 },            		
             		],
-					"Text-to-Image": [],
-					"Audio-to-Text": [],
-					"Text-to-Video": [],
-					"Text-to-3D": [],
-					"Text-to-Audio":[],
-					"Image-to-Text":[],
-					"Image-to-Image":[],
-					"Image-to-3D":[],
-					"Image-to-Video":[],
+					"Text-to-Image": [
+                        {id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
+            			{id: "num-calls", label: "Number of images generated per interaction", type: "number", min: 1, default: 10 },            			
+            			{id: "num-tests", label: "How many times was this feature tested?", type: "number", min: 1, default: 50 },															
+					],
+					"Audio-to-Text": [
+            			{id: "prompt-len", label: "Average length of audio input in seconds", type: "number", min: 1, default: 10,_en:a2t/10},
+            			{id: "num-calls", label: "Number of audio clips sent to the system per interaction", type: "number", min: 1, default: 10 },            			
+            			{id: "num-tests", label: "How many times was this feature tested?", type: "number", min: 1, default: 50 },					
+					],
+					"Text-to-Video": [
+            			{id: "prompt-len", label: "Average length of video output (in seconds)", type: "number", min: 1, default: 10,_en:t2v},
+            			{id: "num-calls", label: "Number of videos generated per interaction", type: "number", min: 1, default: 10 },            			
+            			{id: "num-tests", label: "How many times was this feature tested?", type: "number", min: 1, default: 50 },										
+
+					],
+					"Text-to-3D": [
+            			{id: "num-calls", label: "Number of 3D graphics generated per interaction", type: "number", min: 1, default: 10, _en:t3d },            			
+            			{id: "num-tests", label: "How many times was this feature tested?", type: "number", min: 1, default: 50 },															
+					],
+					"Text-to-Audio":[
+            			{id: "prompt-len", label: "Average length of audio output (in seconds)", type: "number", min: 1, default: 10,_en:t2a},
+            			{id: "num-calls", label: "Number of audio clips generated per interaction", type: "number", min: 1, default: 10 },            			
+            			{id: "num-tests", label: "How many times was this feature tested?", type: "number", min: 1, default: 50 },															
+					],
+					"Image-to-Text":[
+                        {id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
+            			{id: "num-calls", label: "Number of images input to the system per interaction", type: "number", min: 1, default: 10 },            			
+            			{id: "num-tests", label: "How many times was this feature tested?", type: "number", min: 1, default: 50 },										
+					],
+					"Image-to-Image":[
+                        {id: "img-res", label: "Image resolution (input)", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2i/512},					
+                        {id: "img-res", label: "Image resolution (output)", type: "number", min: 32, default: 512, step: 32, max: 4096},					                        
+            			{id: "prompt-len", label: "Number of images input to the system per interaction", type: "number", min: 1, default: 10},
+            			{id: "num-calls", label: "Number of images generated per interaction", type: "number", min: 1, default: 10 },            			
+            			{id: "num-tests", label: "How many times was this feature tested?", type: "number", min: 1, default: 50 },            							
+					],
+					"Image-to-3D":[
+            			{id: "num-calls", label: "Number of 3D graphics generated per interaction", type: "number", min: 1, default: 10, _en:i3d },            			
+            			{id: "num-tests", label: "How many times was this feature tested?", type: "number", min: 1, default: 50 },															
+					
+					],
+					"Image-to-Video":[
+                        {id: "img-res", label: "Video resolution", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2v},					
+            			{id: "num-calls", label: "Length of video generated per interaction in seconds", type: "number", min: 1, default: 10 },            			
+            			{id: "num-tests", label: "How many times was this feature tested?", type: "number", min: 1, default: 50 },															
+					],
             	},
             	"video-prototyping":{
             		"Text-to-Video":[]
