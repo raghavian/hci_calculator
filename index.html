@@ -166,7 +166,13 @@
             },
             "prototyping-building": {
             	"customized-chatbot":{
-            		"Text-to-Text": [],
+            		"Text-to-Text": [
+//            			{id: "", label: "", type: "", min: , default: ,_en:},
+            			{id: "prompt-len", label: "System prompt length (number of words)", type: "number", min: 1, default: 100,_en:t2t},
+            			{id: "num-words", label: "Average amount of words per message sent to the chatbot", type: "number", min: 1, default: 50 ,_en:},            			
+            			{id: "num-prompts", label: "How many different system prompts did you try?", type: "number", min: 1, default: 50 ,_en:},                			
+            			{id: "num-tests", label: "How many test messages were sent?", type: "number", min: 1, default: 50 ,_en:},                			            			
+            		],
             	},
             	"prototype-using-gen-ai-functionality":{
             		"Text-to-Text": [],
