@@ -135,11 +135,11 @@
 	const t2i = 0.00130097;
 	const a2t = 0.00633499;
 	const t2v = 0.02174218;
-	const t3d = 0.2632;
+	const t3d = 0.02632;
 	const t2a = 0.01141833;
 	const i2t = 0.00342265;
 	const i2i = 0.00088496;
-	const i3d = 0.00130097;
+	const i3d = 0.0130097;
 	const v2t = 0.00103984;
 	const v2v = 0.02601953;
 	const a2a = 0.006335;
@@ -193,7 +193,6 @@
             			{id: "prompt-len", label: "Average length of video output (in seconds)", type: "number", min: 1, default: 10,_en:t2v},
             			{id: "num-calls", label: "Number of videos generated per interaction", type: "number", min: 1, default: 10 },            			
             			{id: "num-tests", label: "How many times was this feature tested?", type: "number", min: 1, default: 50 },										
-
 					],
 					"Text-to-3D": [
             			{id: "num-calls", label: "Number of 3D graphics generated per interaction", type: "number", min: 1, default: 10, _en:t3d },            			
@@ -228,10 +227,18 @@
 					],
             	},
             	"video-prototyping":{
-            		"Text-to-Video":[]
+            		"Text-to-Video":[
+                        {id: "img-res", label: "Video resolution", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2v},					
+            			{id: "num-calls", label: "Length of video in seconds", type: "number", min: 1, default: 10 },            			
+            			{id: "num-tests", label: "Number of videos generated", type: "number", min: 1, default: 50 },										            		
+            		]
             	},
             	"generating-graphics-for-prototype":{
-            		"Text-to-Image":[]
+            		"Text-to-Image":[
+                        {id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
+            			{id: "num-calls", label: "Number of images generated", type: "number", min: 1, default: 10 },            			
+            		
+            		]
             	},
             },
             "evaluation-user-studies": {
