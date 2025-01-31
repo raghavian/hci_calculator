@@ -6,14 +6,14 @@
     <title>HCI GenAI CO2st Calculator</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Raleway, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #f4f4f4;
+            background-color: #ffffff;
         }
 
         .calculator-container {
@@ -38,6 +38,7 @@
 
         input, select {
             width: calc(100% - 20px);
+            font-family: Raleway, sans-serif;
             padding: 8px;
             margin: 5px 0 10px 0;
             border: 1px solid #ccc;
@@ -46,7 +47,7 @@
 
         button {
             padding: 10px 20px;
-            background-color: #007BFF;
+            background-color: #854DFF;
             border: none;
             border-radius: 4px;
             color: white;
@@ -56,22 +57,21 @@
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #061551;
         }
 
         #jobs-list {
+            
             margin-top: 10px;
             padding: 10px;
-            border: 1px solid #ccc;
             border-radius: 4px;
-            background-color: #f9f9f9;
             margin-bottom: 10px;
         }
 
         .job-item {
             margin-bottom: 5px;
             padding: 5px;
-            background-color: #e9ecef;
+            background-color: #efc8c8;
             border-radius: 4px;
             font-size: 0.75em;
         }
@@ -80,13 +80,33 @@
             margin-top: 10px;
             margin-bottom: 10px;	
             padding: 15px;
-            border: 2px solid #28a745;
             border-radius: 4px;
-            background-color: #d4edda;
-            color: #155724;
+            background-color: #efc8c8;
+            color: #c46952;
             font-weight: bold;
             font-size: 1.5em;
         }
+
+        #dynamic-equivalents {
+            margin-top: 15px;
+            margin-bottom: 10px;
+            padding: 10px;
+            padding-left: 40px;
+            border-radius: 4px;
+            background-color: #f7f7f7;
+            color: #333;
+            font-size: 1em;
+            font-weight: normal;
+            line-height: 1.5;
+        }
+
+        .equivalent-item {
+            margin-bottom: 5px;
+}
+
+
+
+
     </style>
 </head>
 <body>
@@ -95,6 +115,12 @@
         
         <div id="result">
         <label> Your carbon footprint is approximately <br> 0.00000 kgCO2e</label>
+        </div>
+
+        <div id="dynamic-equivalents">
+            <div class="equivalent-item">Equal to <b id="km-driven">0</b> km driven in a gasoline-powered car.</div>
+            <div class="equivalent-item">Equal to <b id="minutes-airplane">0</b> minutes in a passenger airplane.</div>
+            <div class="equivalent-item">Equal to <b id="tree-seedlings">0</b> tree seedlings growing for 10 years.</div>
         </div>
 
         <div class="form-group">
@@ -146,6 +172,7 @@
 	const i2v = 0.002601953;
 	
         const jobs = [];
+
         const optionsHierarchy = {
             "research-planning": {
                 "literature-review-or-search": {
@@ -354,6 +381,7 @@
             }
         };
 
+
         function populateTasks(phase) {
             const taskSelect = document.getElementById('specific-task');
             taskSelect.innerHTML = '';
@@ -409,6 +437,8 @@
                 paramsDiv.appendChild(paramDiv);
             });
         }
+
+
 
         document.getElementById('use-case').addEventListener('change', function () {
             const phase = this.value;
@@ -509,6 +539,43 @@ ${carbonFootprint.toFixed(5)} kgCO2e`;
 
 //            \n${totalFootprint.toFixed(5)} kgCO2e`;
         });
+
+
+    // Function to update the dynamic equivalents
+    function updateEquivalents(resultValue) {
+        document.getElementById("km-driven").textContent = (resultValue * 4).toFixed(2); 
+        document.getElementById("minutes-airplane").textContent = (resultValue * 0.24).toFixed(2); 
+        document.getElementById("tree-seedlings").textContent = (resultValue * 0.017).toFixed(2); 
+    }
+
+    // Listen for changes to the result value
+    function observeResult() {
+        const resultElement = document.getElementById("result");
+    
+    // Example way to parse the numeric value from the result text (adjust if needed)
+    const parseResultValue = () => {
+        const text = resultElement.textContent || resultElement.innerText;
+        const match = text.match(/([\d.]+)/); // Extract the first number from the text
+        return match ? parseFloat(match[1]) : 0;
+    };
+
+    const update = () => {
+        const resultValue = parseResultValue();
+        updateEquivalents(resultValue);
+    };
+
+    // Example: If the result changes programmatically, use a MutationObserver
+    const observer = new MutationObserver(update);
+    observer.observe(resultElement, { childList: true, subtree: true });
+
+    // Initial update in case the result is already set
+    update();
+    }
+
+    // Call the observer function on load
+    observeResult();
+
+
     </script>
 </body>
 </html>
