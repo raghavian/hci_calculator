@@ -407,16 +407,28 @@
             },
             "dissemination": {
                 "manuscript-generation-(text)":{
-                    "Text-to-text":[],                
+                    "Text-to-text":[
+                        {id: "input-param", label: "Average length of input prompts", type: "number", min: 1, default: 10,_en:t2t},
+                        {id: "num-words", label: "Number of prompts", type: "number", min: 1, default: 10 },                        
+                        ],                
                 },
                 "graphics-generation":{
-                    "Text-to-Image":[],                
+                    "Text-to-Image":[
+                        {id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
+                        {id: "num-calls", label: "Number of images generated", type: "number", min: 1, default: 10 },                        
+                        ],                
                 },
                 "proofreading":{
-                    "Text-to-text":[],                
+                    "Text-to-text":[
+                        {id: "input-param", label: "Length of manuscript (in words)", type: "number", min: 1, default: 10,_en:t2t},
+                        {id: "num-words", label: "Number of times proofs have been requested", type: "number", min: 1, default: 10 },                        
+                            ],                
                 },
                 "slides-generation":{
-                    "Text-to-image":[],                
+                    "Text-to-image":[
+                        {id: "img-res", label: "Resolution of slides", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
+                        {id: "num-calls", label: "Number of slides generated", type: "number", min: 1, default: 10 },                        
+                            ],                
                 },
                 "audio-presentation-generation":{
                     "Text-to-audio":[],                
