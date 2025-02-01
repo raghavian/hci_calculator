@@ -505,17 +505,18 @@
 	    const carbonIntensity = 0.481;
 
 
-	    // Retrieve additional parameters for the specific task
-	    const dynamicParamsDiv = document.getElementById('dynamic-parameters');
-	    const additionalParams = {};
-	    Array.from(dynamicParamsDiv.querySelectorAll('input')).forEach(input => {
-		if (input.type === 'number' || input.type === 'range' ) {
-            if (input.id === 'input-param') {
-            return; // Skip this iteration
-        }
-		    additionalParams[input.id] = parseFloat(input.value);
-		}
-	    });
+            // Retrieve additional parameters for the specific task
+            const dynamicParamsDiv = document.getElementById('dynamic-parameters');
+            const additionalParams = {};
+            Array.from(dynamicParamsDiv.querySelectorAll('input')).forEach(input => {
+                if (input.type === 'number' || input.type === 'range') {
+                    if (input.id === 'input-param') {
+                        additionalParams[input.id] = parseFloat(input.value) * 0.1; // Multiply by 0.1 for input token processing cost which is cheaper than output tokens
+                    } else {
+                        additionalParams[input.id] = parseFloat(input.value);
+                    }
+                }
+            });
 
 	    // Example: Adjust carbon footprint calculation based on additional parameters
 	    let additionalFactor = 1; // Default factor
