@@ -184,9 +184,14 @@
                         {id: "prompt-len", label: "Number of images input to the system per interaction", type: "number", min: 1, default: 10},
             		{id: "num-calls", label: "Number of images generated per interaction", type: "number", min: 1, default: 10 },            			
             		{id: "num-tests", label: "How many users or evaluators did you have?", type: "number", min: 1, default: 50 }];
-        const EU_i2v = [];
-        const EU_i3d = [];
-        const EU_t2t = [];
+        const EU_i2v = [{id: "img-res", label: "Video resolution", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2v},					
+            		{id: "num-calls", label: "Length of video generated per interaction in seconds", type: "number", min: 1, default: 10 },            			
+            		{id: "num-tests", label: "How many users or evaluators did you have?", type: "number", min: 1, default: 50 }];
+        const EU_i3d = [{id: "num-calls", label: "Number of 3D graphics generated per interaction", type: "number", min: 1, default: 10, _en:i3d },            			
+            		{id: "num-tests", label: "How many users or evaluators did you have?", type: "number", min: 1, default: 50 }];
+        const EU_t2t = [{id: "input-param", label: "Number of words sent to the system (including system prompt)", type: "number", min: 1, default: 10,_en:t2t},
+            		{id: "num-prompts", label: "Number of calls to the system per interaction", type: "number", min: 1, default: 50 },                			
+            		{id: "num-tests", label: "How many users or evaluators did you have?", type: "number", min: 1, default: 50}];               			
         const EU_t2i = [];
         const EU_t2a = [];
         const EU_t2v = [];
