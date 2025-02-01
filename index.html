@@ -177,8 +177,8 @@
                         {id: "num-calls", label: "Number of audio clips sent to the system per interaction", type: "number", min: 1, default: 10 },            			
                 	{id: "num-tests", label: "How many users or evaluators did you have?", type: "number", min: 1, default: 50 }];
         const EU_i2t = [{id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
-            			{id: "num-calls", label: "Number of images input to the system per interaction", type: "number", min: 1, default: 10 },            			
-            			{id: "num-tests", label: "How many users or evaluators did you have?", type: "number", min: 1, default: 50 }];
+                        {id: "num-calls", label: "Number of images input to the system per interaction", type: "number", min: 1, default: 10 },            			
+                        {id: "num-tests", label: "How many users or evaluators did you have?", type: "number", min: 1, default: 50 }];
         const EU_i2i = [{id: "input-param", label: "Image resolution (input)", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2i},					
                         {id: "img-res", label: "Image resolution (output)", type: "number", min: 32, default: 512, step: 32, max: 4096},					                        
                         {id: "prompt-len", label: "Number of images input to the system per interaction", type: "number", min: 1, default: 10},
@@ -204,6 +204,16 @@
             		{id: "num-tests", label: "How many users or evaluators did you have?", type: "number", min: 1, default: 50 }];
         const EU_t3d = [{id: "num-calls", label: "Number of 3D graphics generated per interaction", type: "number", min: 1, default: 10, _en:t3d },            			
             		{id: "num-tests", label: "How many times was this feature tested?", type: "number", min: 1, default: 50 }];
+
+        const DC_t2t = [{id: "input-param", label: "Length of input prompt (number of words)", type: "number", min: 1, default: 10,_en:t2t},
+            		{id: "num-prompts", label: "Size of output (number of words)", type: "number", min: 1, default: 50 },                			
+            		{id: "num-tests", label: "Number of tests (full dataset generation)", type: "number", min: 1, default: 50}];               			
+        const DC_t2i = [{id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
+                        {id: "num-calls", label: "Number of images generated per interaction", type: "number", min: 1, default: 10 },
+      			{id: "num-tests", label: "Number of tests (full dataset generation)", type: "number", min: 1, default: 50 }];
+        const DC_t2v = [{id: "prompt-len", label: "Average length of video output (in seconds)", type: "number", min: 1, default: 10,_en:t2v},
+                        {id: "img-res", label: "Video resolution", type: "number", min: 32, default: 512, step: 32, max: 4096},					
+            		{id: "num-calls", label: "Number of videos generated per interaction", type: "number", min: 1, default: 10 }];	
 
         const optionsHierarchy = {
             "research-planning": {
@@ -359,14 +369,14 @@
 					"Text-to-text":[],            	
             	},
             	"dataset-generation":{
-					"Text-to-text":[],
-					"Text-to-image":[],
-					"Text-to-video":[],
+					"Text-to-text": DC_t2t,
+					"Text-to-image": DC_t2i,
+					"Text-to-video": DC_t2v,
             	},
             	"generation-of-model-output-for-exploration-or-evaluation":{
-					"Text-to-text":[],
-					"Text-to-image":[],
-					"Text-to-video":[],
+					"Text-to-text": DC_t2t,
+					"Text-to-image": DC_t2i,
+					"Text-to-video": DC_t2v,
             	}
             },
             "analysis-synthesis": {
