@@ -215,6 +215,20 @@
                         {id: "img-res", label: "Video resolution", type: "number", min: 32, default: 512, step: 32, max: 4096},                    
                     {id: "num-calls", label: "Number of videos generated per interaction", type: "number", min: 1, default: 10 }];    
 
+        const TF_t2t = [{id: "input-param", label: "Average length of instances", type: "number", min: 1, default: 10,_en:t2t},
+                    {id: "num-prompts", label: "Number of text instances", type: "number", min: 1, default: 50 },                            
+                    {id: "num-tests", label: "Number of epochs", type: "number", min: 1, default: 50}];
+        const TF_t2i = [{id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
+                        {id: "num-calls", label: "Number of images instances", type: "number", min: 1, default: 10 },
+                  {id: "num-tests", label: "Number of epochs", type: "number", min: 1, default: 50 }];
+        const TF_i2t = [{id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
+                        {id: "num-calls", label: "Number of image instances", type: "number", min: 1, default: 10 },                        
+                        {id: "num-tests", label: "Number of epochs", type: "number", min: 1, default: 50 }];
+        const TF_t2i = [{id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
+                        {id: "num-calls", label: "Number of image instances", type: "number", min: 1, default: 10 },
+                  {id: "num-tests", label: "Number of epochs", type: "number", min: 1, default: 50 }];
+
+
         const optionsHierarchy = {
             "research-planning": {
                 "literature-review-or-search": {
@@ -439,16 +453,16 @@
             },
             "training-fine-tuning": {
                 "model-training":{
-                    "Text-to-text":[],
-                    "Text-to-image":[],
-                    "Image-to-text":[],
-                    "Image-to-image":[],
+                    "Text-to-text": TF_t2t,
+                    "Text-to-image": TF_t2i,
+                    "Image-to-text": TF_i2t,
+                    "Image-to-image": TF_i2i,
                 },
                 "model-fine-tuning":{
-                    "Text-to-text":[],
-                    "Text-to-image":[],
-                    "Image-to-text":[],
-                    "Image-to-image":[],                
+                    "Text-to-text": TF_t2t,
+                    "Text-to-image": TF_t2i,
+                    "Image-to-text": TF_12t,
+                    "Image-to-image": TF_i2i,                
                 }
             }
         };
