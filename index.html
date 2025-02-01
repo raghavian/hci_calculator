@@ -192,7 +192,7 @@
         const EU_t2t = [{id: "input-param", label: "Number of words sent to the system (including system prompt)", type: "number", min: 1, default: 10,_en:t2t},
                     {id: "num-prompts", label: "Number of calls to the system per interaction", type: "number", min: 1, default: 50 },                            
                     {id: "num-tests", label: "How many users or evaluators did you have?", type: "number", min: 1, default: 50}];                           
-        const EU_t2i = [{id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
+        const EU_t2i = [{id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:t2i},
                         {id: "num-calls", label: "Number of images generated per interaction", type: "number", min: 1, default: 10 },
                   {id: "num-tests", label: "How many users or evaluators did you have?", type: "number", min: 1, default: 50 }];
         const EU_t2a = [{id: "prompt-len", label: "Average length of audio output (in seconds)", type: "number", min: 1, default: 10,_en:t2a},
@@ -208,7 +208,7 @@
         const DC_t2t = [{id: "input-param", label: "Length of input prompt (number of words)", type: "number", min: 1, default: 10,_en:t2t},
                     {id: "num-prompts", label: "Size of output (number of words)", type: "number", min: 1, default: 50 },                            
                     {id: "num-tests", label: "Number of tests (full dataset generation)", type: "number", min: 1, default: 50}];                           
-        const DC_t2i = [{id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
+        const DC_t2i = [{id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:t2i},
                         {id: "num-calls", label: "Number of images generated per interaction", type: "number", min: 1, default: 10 },
                   {id: "num-tests", label: "Number of tests (full dataset generation)", type: "number", min: 1, default: 50 }];
         const DC_t2v = [{id: "prompt-len", label: "Average length of video output (in seconds)", type: "number", min: 1, default: 10,_en:t2v},
@@ -218,15 +218,15 @@
         const TF_t2t = [{id: "input-param", label: "Average length of instances", type: "number", min: 1, default: 10,_en:t2t},
                     {id: "num-prompts", label: "Number of text instances", type: "number", min: 1, default: 50 },                            
                     {id: "num-tests", label: "Number of epochs", type: "number", min: 1, default: 50}];
-        const TF_t2i = [{id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
+        const TF_t2i = [{id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:t2i},
                         {id: "num-calls", label: "Number of images instances", type: "number", min: 1, default: 10 },
-                  {id: "num-tests", label: "Number of epochs", type: "number", min: 1, default: 50 }];
+                        {id: "num-tests", label: "Number of epochs", type: "number", min: 1, default: 50 }];
         const TF_i2t = [{id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
                         {id: "num-calls", label: "Number of image instances", type: "number", min: 1, default: 10 },                        
                         {id: "num-tests", label: "Number of epochs", type: "number", min: 1, default: 50 }];
         const TF_t2i = [{id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
                         {id: "num-calls", label: "Number of image instances", type: "number", min: 1, default: 10 },
-                  {id: "num-tests", label: "Number of epochs", type: "number", min: 1, default: 50 }];
+                        {id: "num-tests", label: "Number of epochs", type: "number", min: 1, default: 50 }];
 
 
         const optionsHierarchy = {
@@ -428,7 +428,7 @@
                 },
                 "graphics-generation":{
                     "Text-to-Image":[
-                        {id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
+                        {id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:t2i},
                         {id: "num-calls", label: "Number of images generated", type: "number", min: 1, default: 10 },                        
                         ],                
                 },
@@ -440,7 +440,7 @@
                 },
                 "slides-generation":{
                     "Text-to-image":[
-                        {id: "img-res", label: "Resolution of slides", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
+                        {id: "img-res", label: "Resolution of slides", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:t2i},
                         {id: "num-calls", label: "Number of slides generated", type: "number", min: 1, default: 10 },                        
                             ],                
                 },
