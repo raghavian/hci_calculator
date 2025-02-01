@@ -363,10 +363,16 @@
             },
             "data-collection-generation": {
             	"automatic-transcription":{
-            		"Audio-to-text":[],            	
+            		"Audio-to-text":[
+                        	{id: "input-param", label: "Average length of audio files in seconds", type: "number", min: 1, default: 10,_en:a2t},
+            			{id: "num-calls", label: "Number of audio files", type: "number", min: 1, default: 10 },            			
+                                ],            	
             	},
             	"automatic-translation":{
-					"Text-to-text":[],            	
+					"Text-to-text":[
+            			{id: "input-param", label: "Average length of texts (number of words)", type: "number", min: 1, default: 10,_en:t2t},
+            			{id: "num-words", label: "Number of texts translated", type: "number", min: 1, default: 10 },            			
+                                                ],            	
             	},
             	"dataset-generation":{
 					"Text-to-text": DC_t2t,
