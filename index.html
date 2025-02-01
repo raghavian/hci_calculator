@@ -431,7 +431,10 @@
                             ],                
                 },
                 "audio-presentation-generation":{
-                    "Text-to-audio":[],                
+                    "Text-to-audio":[
+                        {id: "prompt-len", label: "Average length of audio output (in seconds)", type: "number", min: 1, default: 10,_en:t2a},
+                        {id: "num-calls", label: "Number of audio clips generated per interaction", type: "number", min: 1, default: 10 },                        
+                        ],                
                 }
             },
             "training-fine-tuning": {
