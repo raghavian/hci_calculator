@@ -195,7 +195,9 @@
         const EU_t2i = [{id: "img-res", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
                         {id: "num-calls", label: "Number of images generated per interaction", type: "number", min: 1, default: 10 },
       			{id: "num-tests", label: "How many users or evaluators did you have?", type: "number", min: 1, default: 50 }];
-        const EU_t2a = [];
+        const EU_t2a = [{id: "prompt-len", label: "Average length of audio output (in seconds)", type: "number", min: 1, default: 10,_en:t2a},
+            		{id: "num-calls", label: "Number of audio clips generated per interaction", type: "number", min: 1, default: 10 },            			
+            		{id: "num-tests", label: "How many users or evaluators did you have?", type: "number", min: 1, default: 50 }];		
         const EU_t2v = [];
         const EU_t3d = [];
 
