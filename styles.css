@@ -1,0 +1,104 @@
+        body {
+            font-family: Raleway, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #ffffff;
+        }
+
+        .calculator-container {
+            width: 90%;
+            max-width: 600px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: calc(100% - 20px);
+            font-family: Raleway, sans-serif;
+            padding: 8px;
+            margin: 5px 0 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #854DFF;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.05em;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #061551;
+        }
+
+        #jobs-list {
+            
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .job-item {
+            margin-bottom: 5px;
+            padding: 5px;
+            background-color: #efc8c8;
+            border-radius: 4px;
+            font-size: 0.75em;
+        }
+
+        #result {
+            margin-top: 10px;
+            margin-bottom: 10px;    
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #efc8c8;
+            color: #c46952;
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+
+        #dynamic-equivalents {
+            margin-top: 15px;
+            margin-bottom: 10px;
+            padding: 10px;
+            padding-left: 40px;
+            border-radius: 4px;
+            background-color: #f7f7f7;
+            color: #333;
+            font-size: 1em;
+            font-weight: normal;
+            line-height: 1.5;
+        }
+
+        .equivalent-item {
+            margin-bottom: 5px;
+        }
+
+        .equivalent-item i {
+        font-size: 20px;
+        color: #2c3e50;
+        }
+
