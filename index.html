@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HCI GenAI CO2st Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         body {
             font-family: Raleway, sans-serif;
@@ -102,7 +103,12 @@
 
         .equivalent-item {
             margin-bottom: 5px;
-}
+        }
+
+        .equivalent-item i {
+        font-size: 20px;
+        color: #2c3e50;
+        }
 
 
 
@@ -117,12 +123,16 @@
         <label> Your carbon footprint is approximately <br> 0.00000 kgCO2e</label>
         </div>
 
-        <div id="dynamic-equivalents">
-            <div class="equivalent-item">Equal to <b id="km-driven">0</b> km driven in a gasoline-powered car.</div>
-            <div class="equivalent-item">Equal to <b id="minutes-airplane">0</b> minutes in a passenger airplane.</div>
-            <div class="equivalent-item">Equal to <b id="tree-seedlings">0</b> tree seedlings growing for 10 years.</div>
-        </div>
-
+            <div id="dynamic-equivalents">
+            <div class="equivalent-item">
+                <i class="fas fa-car"></i> Equal to <b id="km-driven">0</b> km driven in a gasoline-powered car.
+            </div>
+            <div class="equivalent-item">
+                <i class="fas fa-plane"></i> Equal to <b id="minutes-airplane">0</b> minutes in a passenger airplane.
+            </div>
+            <div class="equivalent-item">
+                <i class="fas fa-tree"></i> Equal to <b id="tree-seedlings">0</b> tree seedlings growing for 10 years.
+            </div>
         <div class="form-group">
             <label for="use-case">Select Research Phase:</label>
             <select id="use-case" required>
