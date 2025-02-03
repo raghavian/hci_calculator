@@ -57,16 +57,16 @@
                     {id: "num-calls", label: "Number of videos generated per interaction", type: "number", min: 1, default: 10 }];    
 
         const TF_t2t = [{id: "input-param", label: "Average length of instances", type: "number", min: 1, default: 10,_en:t2t},
-                    {id: "input-param", label: "Number of text instances", type: "number", min: 1, default: 50 },                            
+                    {id: "num-prompts", label: "Number of text instances", type: "number", min: 1, default: 50 },                            
                     {id: "num-tests", label: "Number of epochs", type: "number", min: 1, default: 50}];
         const TF_t2i = [{id: "input-param", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:t2i},
-                        {id: "input-param", label: "Number of images instances", type: "number", min: 1, default: 10 },
+                        {id: "num-impaes", label: "Number of images instances", type: "number", min: 1, default: 10 },
                         {id: "num-tests", label: "Number of epochs", type: "number", min: 1, default: 50 }];
         const TF_i2t = [{id: "input-param", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2t},
-                        {id: "input-param", label: "Number of image instances", type: "number", min: 1, default: 10 },                        
+                        {id: "num-images", label: "Number of image instances", type: "number", min: 1, default: 10 },                        
                         {id: "num-tests", label: "Number of epochs", type: "number", min: 1, default: 50 }];
         const TF_i2i = [{id: "input-param", label: "Resolution of images", type: "number", min: 32, default: 512, step: 32, max: 4096, _en:i2i},
-                        {id: "input-param", label: "Number of image instances", type: "number", min: 1, default: 10 },
+                        {id: "num-images", label: "Number of image instances", type: "number", min: 1, default: 10 },
                         {id: "num-tests", label: "Number of epochs", type: "number", min: 1, default: 50 }];
 
 
